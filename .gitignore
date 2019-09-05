@@ -74,6 +74,7 @@ DerivedData/
 Carthage/Build
 Carthage/Checkouts
 
+*.xcodeproj/
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj
 !*.xcodeproj/xcshareddata/
