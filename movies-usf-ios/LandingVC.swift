@@ -10,22 +10,39 @@ import UIKit
 
 class LandingVC: UIViewController {
 
+//    let btnSearch = UIButton()
+    let btnGenreChecklist = UIButton()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
 
-        // Do any additional setup after loading the view.
+        setupButtons()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func setupButtons() {
+        btnGenreChecklist.backgroundColor = .white
+        btnGenreChecklist.setTitleColor(.red, for: .normal)
+        btnGenreChecklist.setTitle("Pick Genres", for:.normal)
+        view.addSubview(btnGenreChecklist)
+        
+        // constraints
+        
+        btnGenreChecklist.translatesAutoresizingMaskIntoConstraints = false // use Auto Layout
+        btnGenreChecklist.leadingAnchor.constraint(
+            equalTo: view.leadingAnchor,
+            constant: 20
+        ).isActive = true // activate the constraint
+        btnGenreChecklist.trailingAnchor.constraint(
+            equalTo: view.trailingAnchor,
+            constant: -20
+        ).isActive = true
+        btnGenreChecklist.heightAnchor.constraint(
+            equalToConstant: 50
+        ).isActive = true
+        btnGenreChecklist.centerYAnchor.constraint(
+            equalTo: view.centerYAnchor
+        ).isActive = true
     }
-    */
-
+    
 }
