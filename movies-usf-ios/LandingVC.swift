@@ -27,7 +27,6 @@ class LandingVC: UIViewController {
         view.addSubview(btnGenreChecklist)
         
         // constraints
-        
         btnGenreChecklist.translatesAutoresizingMaskIntoConstraints = false // use Auto Layout
         btnGenreChecklist.leadingAnchor.constraint(
             equalTo: view.leadingAnchor,
@@ -43,6 +42,7 @@ class LandingVC: UIViewController {
         btnGenreChecklist.centerYAnchor.constraint(
             equalTo: view.centerYAnchor
         ).isActive = true
+        // can also use NSLayoutConstraint.activate([
     }
     
 }
