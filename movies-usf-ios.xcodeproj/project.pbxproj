@@ -12,6 +12,7 @@
 		236DF0282320B12000C32E7F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 236DF0262320B12000C32E7F /* LaunchScreen.storyboard */; };
 		236DF0332320B12000C32E7F /* movies_usf_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DF0322320B12000C32E7F /* movies_usf_iosTests.swift */; };
 		236DF03E2320B12000C32E7F /* movies_usf_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DF03D2320B12000C32E7F /* movies_usf_iosUITests.swift */; };
+		238FD46A2320BBA300DC1709 /* LandingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238FD4692320BBA300DC1709 /* LandingVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		236DF0392320B12000C32E7F /* movies-usf-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "movies-usf-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		236DF03D2320B12000C32E7F /* movies_usf_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = movies_usf_iosUITests.swift; sourceTree = "<group>"; };
 		236DF03F2320B12000C32E7F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		238FD4692320BBA300DC1709 /* LandingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 				236DF0242320B12000C32E7F /* Assets.xcassets */,
 				236DF0262320B12000C32E7F /* LaunchScreen.storyboard */,
 				236DF0292320B12000C32E7F /* Info.plist */,
+				238FD4692320BBA300DC1709 /* LandingVC.swift */,
 			);
 			path = "movies-usf-ios";
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				238FD46A2320BBA300DC1709 /* LandingVC.swift in Sources */,
 				236DF01E2320B11F00C32E7F /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
