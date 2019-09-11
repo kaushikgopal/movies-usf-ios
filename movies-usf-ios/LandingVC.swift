@@ -13,6 +13,9 @@ class LandingVC: UITabBarController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
+
+        tabBar.barTintColor = .black
+        tabBar.tintColor = .white
     }
 
     override func viewDidLoad() {
