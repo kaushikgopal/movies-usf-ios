@@ -10,8 +10,11 @@ import UIKit
 
 class LandingVC: UITabBarController {
 
-    let btnGenreChecklist = UIButton()
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .gray
