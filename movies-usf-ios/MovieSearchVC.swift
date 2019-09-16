@@ -112,6 +112,7 @@ class MovieSearchVC: UIViewController {
         srTitle.backgroundColor = .clear
         srTitle.font = UIFont.boldSystemFont(ofSize: 22)
         srTitle.isScrollEnabled = false
+        srTitle.isEditable = false
         srTitle.sizeToFit()
 
         srTitle.translatesAutoresizingMaskIntoConstraints = false
@@ -137,6 +138,7 @@ class MovieSearchVC: UIViewController {
         // setup search result plot
         srPlot.textColor = .gray
         srPlot.backgroundColor = .clear
+        srPlot.isEditable = false
         srPlot.font = UIFont.systemFont(ofSize: 16)
 
         srPlot.translatesAutoresizingMaskIntoConstraints = false
