@@ -7,29 +7,41 @@
 //
 
 import UIKit
+import RxSwift
 
 class MovieSearchVC: UIViewController {
 
-    let sQuery = UITextField()
-    let srImage = UIImageView()
-    let srTitle = UITextView()
-    let srGenre = UITextField()
-    let srPlot = UITextView()
-    let srRating1 = UITextField()
-    let srRating2 = UITextField()
+    private let sQuery = UITextField()
+    private let srImage = UIImageView()
+    private let srTitle = UITextView()
+    private let srGenre = UITextField()
+    private let srPlot = UITextView()
+    private let srRating1 = UITextField()
+    private let srRating2 = UITextField()
+    
+    private let viewModel = MovieSearchVM()
+    private let dbag = DisposeBag()
 
+    override func loadView() {
+        super.loadView()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.black
-
+        
         setupUI()
+        bindViewState()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         // open with keyboard open
         // sQuery.becomeFirstResponder()
+        
+        viewModel.processViewEvent(event: .screenLoad)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -41,6 +53,28 @@ class MovieSearchVC: UIViewController {
         view.endEditing(true)
     }
 
+    // MARK: Private helper functions
+
+    private func bindViewState() {
+        viewModel.viewState
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: { [weak self] vs in
+                    self?.srImage.load(imageUrl: vs.moviePosterUrl)
+                    self?.srTitle.text = vs.movieTitle
+                    self?.srGenre.text = vs.genres
+                    self?.srPlot.text = vs.plot
+                    self?.srRating1.text = vs.rating1
+                    self?.srRating2.text = vs.rating2
+                },
+                onError: { err in
+                    print(" we got an error \(err)")
+                }
+            )
+            .disposed(by: dbag)
+    }
+    
     private func setupUI() {
 
         // setup search query view
@@ -73,9 +107,6 @@ class MovieSearchVC: UIViewController {
             srImage.widthAnchor.constraint(equalToConstant: 128)
         ])
 
-        // let imageURL = URL(string: "https://i.ytimg.com/vi/07So_lJQyqw/maxresdefault.jpg")!
-        // srImage.load(url: imageURL)
-
         // setup search result name
         srTitle.textColor = .white
         srTitle.backgroundColor = .clear
@@ -91,8 +122,6 @@ class MovieSearchVC: UIViewController {
             srTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
         ])
 
-         srTitle.text = "Movie Title (YYYY)"
-
         // setup search result genres
         srGenre.textColor = .green
         srGenre.font = UIFont.systemFont(ofSize: 16)
@@ -104,8 +133,6 @@ class MovieSearchVC: UIViewController {
             srGenre.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor, constant: 6),
             srGenre.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
         ])
-
-        srGenre.text = "Action, Horror, Sci-Fi"
 
         // setup search result plot
         srPlot.textColor = .gray
@@ -121,8 +148,6 @@ class MovieSearchVC: UIViewController {
             srPlot.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
         ])
 
-        srPlot.text = "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires."
-
         // setup search result ratings
         srRating1.textColor = .yellow
         srRating1.font = UIFont.boldSystemFont(ofSize: 18)
@@ -134,8 +159,6 @@ class MovieSearchVC: UIViewController {
             srRating1.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
-        srRating1.text = "IMDB :   7.1/10"
-
         srRating2.textColor = .yellow
         srRating2.font = UIFont.boldSystemFont(ofSize: 18)
 
@@ -145,18 +168,25 @@ class MovieSearchVC: UIViewController {
             srRating2.topAnchor.constraint(equalTo: srRating1.bottomAnchor, constant: 8),
             srRating2.trailingAnchor.constraint(equalTo: srRating1.trailingAnchor)
         ])
-
-        srRating2.text = "Rotten T :      81%"
     }
 }
 
 extension UIImageView {
-    func load(url: URL) {
+    func load(imageUrl: String?) {
+        
+        if imageUrl == nil {
+            self.image = nil
+            self.backgroundColor = .lightGray
+            return
+        }
+        
+        let url = URL(string: imageUrl!)!
         DispatchQueue.global().async { [weak self] in
             if let data = try? Data(contentsOf: url) {
                 if let image = UIImage(data: data) {
                     DispatchQueue.main.async {
                         self?.image = image
+                        self?.backgroundColor = .darkGray
                     }
                 }
             }
