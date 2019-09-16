@@ -15,6 +15,8 @@ class MovieSearchVC: UIViewController {
     let srTitle = UITextView()
     let srGenre = UITextField()
     let srPlot = UITextView()
+    let srRating1 = UITextField()
+    let srRating2 = UITextField()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -120,6 +122,31 @@ class MovieSearchVC: UIViewController {
         ])
 
         srPlot.text = "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires."
+
+        // setup search result ratings
+        srRating1.textColor = .yellow
+        srRating1.font = UIFont.boldSystemFont(ofSize: 18)
+
+        srRating1.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(srRating1)
+        NSLayoutConstraint.activate([
+            srRating1.topAnchor.constraint(equalTo: srImage.bottomAnchor, constant: 10),
+            srRating1.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+
+        srRating1.text = "IMDB :   7.1/10"
+
+        srRating2.textColor = .yellow
+        srRating2.font = UIFont.boldSystemFont(ofSize: 18)
+
+        srRating2.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(srRating2)
+        NSLayoutConstraint.activate([
+            srRating2.topAnchor.constraint(equalTo: srRating1.bottomAnchor, constant: 8),
+            srRating2.trailingAnchor.constraint(equalTo: srRating1.trailingAnchor)
+        ])
+
+        srRating2.text = "Rotten T :      81%"
     }
 }
 
