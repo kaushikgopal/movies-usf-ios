@@ -33,6 +33,7 @@ class MovieSearchVC: UIViewController {
         
         setupUI()
         bindViewState()
+        bindUI()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -55,6 +56,14 @@ class MovieSearchVC: UIViewController {
 
     // MARK: Private helper functions
 
+    private func bindUI() {
+        sQuery.addTarget(self, action: #selector(searchPressed), for: .editingDidEndOnExit)
+    }
+    
+    @objc private func searchPressed() {
+        viewModel.processViewEvent(event: .searchMovie(sQuery.text ?? ""))
+    }
+    
     private func bindViewState() {
         viewModel.viewState
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))

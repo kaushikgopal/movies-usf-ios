@@ -12,10 +12,14 @@ final class MovieSearchVM {
 
     enum ViewEvent {
         case screenLoad
+        case searchMovie(String)
     }
     
     enum ViewResult {
         case screenLoadResult
+        case searchMovieResult(
+            movieTitle: String
+        )
     }
     
     struct ViewState {
@@ -86,6 +90,8 @@ private func eventToResult(
             switch event {
             case .screenLoad:
                 return Observable.just(.screenLoadResult)
+            case .searchMovie(let (movieSearched)):
+                return Observable.just(.searchMovieResult(movieTitle: movieSearched))
         }
     }
 }
@@ -112,6 +118,15 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                         rating1: "IMDB :   7.1/10",
                         rating2: "Rotten T :      81%"
                     )
+            case .searchMovieResult(let movieTitle):
+                return previousViewState.copy(
+                    movieTitle: movieTitle + " todo",
+                    moviePosterUrl: nil,
+                    genres: "Genre (Action, Sci-Fi)",
+                    plot: "If we have a short summary of the Movie's plot, it will show up here.",
+                    rating1: "IMDB :   7.1/10",
+                    rating2: "Rotten T :      81%"
+                )
             }
         }
     }
@@ -119,7 +134,7 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
     func resultToViewEffect() -> Observable<MovieSearchVM.ViewEffect> {
         return self.map { (result: MovieSearchVM.ViewResult) in
             switch result {
-            case .screenLoadResult:
+            case .screenLoadResult, .searchMovieResult(_):
                 return .noEffect
             }
         }
