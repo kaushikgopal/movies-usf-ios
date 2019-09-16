@@ -12,7 +12,7 @@ class MovieSearchVC: UIViewController {
 
     let sQuery = UITextField()
     let srImage = UIImageView()
-    let srTitle = UITextField()
+    let srTitle = UITextView()
     let srGenre = UITextField()
     let srPlot = UITextView()
 
@@ -76,13 +76,16 @@ class MovieSearchVC: UIViewController {
 
         // setup search result name
         srTitle.textColor = .white
+        srTitle.backgroundColor = .clear
         srTitle.font = UIFont.boldSystemFont(ofSize: 22)
+        srTitle.isScrollEnabled = false
+        srTitle.sizeToFit()
 
         srTitle.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(srTitle)
         NSLayoutConstraint.activate([
             srTitle.topAnchor.constraint(equalTo: srImage.topAnchor),
-            srTitle.leadingAnchor.constraint(equalTo: srImage.trailingAnchor, constant: 24),
+            srTitle.leadingAnchor.constraint(equalTo: srImage.trailingAnchor, constant: 12),
             srTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
         ])
 
@@ -95,8 +98,8 @@ class MovieSearchVC: UIViewController {
         srGenre.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(srGenre)
         NSLayoutConstraint.activate([
-            srGenre.topAnchor.constraint(equalTo: srTitle.bottomAnchor, constant: 6),
-            srGenre.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor),
+            srGenre.topAnchor.constraint(equalTo: srTitle.bottomAnchor),
+            srGenre.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor, constant: 6),
             srGenre.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
         ])
 
@@ -112,7 +115,7 @@ class MovieSearchVC: UIViewController {
         NSLayoutConstraint.activate([
             srPlot.topAnchor.constraint(equalTo: srGenre.bottomAnchor),
             srPlot.bottomAnchor.constraint(equalTo: srImage.bottomAnchor),
-            srPlot.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor, constant: -4),
+            srPlot.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor),
             srPlot.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
         ])
 
