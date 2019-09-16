@@ -13,6 +13,7 @@ class MovieSearchVC: UIViewController {
     let sQuery = UITextField()
     let srImage = UIImageView()
     let srTitle = UITextField()
+    let srPlot = UITextView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,7 +81,23 @@ class MovieSearchVC: UIViewController {
             srTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
         ])
 
-        // srTitle.text = "Movie Title"
+         srTitle.text = "Movie Title"
+
+        // setup search result plot
+        srPlot.textColor = .gray
+        srPlot.backgroundColor = .clear
+        srPlot.font = UIFont.systemFont(ofSize: 16)
+
+        srPlot.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(srPlot)
+        NSLayoutConstraint.activate([
+            srPlot.topAnchor.constraint(equalTo: srTitle.bottomAnchor),
+            srPlot.bottomAnchor.constraint(equalTo: srImage.bottomAnchor),
+            srPlot.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor),
+            srPlot.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
+        ])
+
+//        srPlot.text = "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires."
     }
 }
 
