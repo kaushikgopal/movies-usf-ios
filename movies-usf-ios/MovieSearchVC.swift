@@ -13,6 +13,7 @@ class MovieSearchVC: UIViewController {
     let sQuery = UITextField()
     let srImage = UIImageView()
     let srTitle = UITextField()
+    let srGenre = UITextField()
     let srPlot = UITextView()
 
     override func viewDidLoad() {
@@ -85,7 +86,21 @@ class MovieSearchVC: UIViewController {
             srTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
         ])
 
-         srTitle.text = "Movie Title"
+         srTitle.text = "Movie Title (YYYY)"
+
+        // setup search result genres
+        srGenre.textColor = .green
+        srGenre.font = UIFont.systemFont(ofSize: 16)
+
+        srGenre.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(srGenre)
+        NSLayoutConstraint.activate([
+            srGenre.topAnchor.constraint(equalTo: srTitle.bottomAnchor, constant: 6),
+            srGenre.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor),
+            srGenre.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
+        ])
+
+        srGenre.text = "Action, Horror, Sci-Fi"
 
         // setup search result plot
         srPlot.textColor = .gray
@@ -95,10 +110,10 @@ class MovieSearchVC: UIViewController {
         srPlot.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(srPlot)
         NSLayoutConstraint.activate([
-            srPlot.topAnchor.constraint(equalTo: srTitle.bottomAnchor),
+            srPlot.topAnchor.constraint(equalTo: srGenre.bottomAnchor),
             srPlot.bottomAnchor.constraint(equalTo: srImage.bottomAnchor),
-            srPlot.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor),
-            srPlot.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
+            srPlot.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor, constant: -4),
+            srPlot.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
         ])
 
         srPlot.text = "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires."
