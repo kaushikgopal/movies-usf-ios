@@ -29,6 +29,10 @@ class MovieSearchVC: UIViewController {
         // sQuery.becomeFirstResponder()
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // on touching anywhere outside of search view, hide keyboard
         view.endEditing(true)
@@ -97,7 +101,7 @@ class MovieSearchVC: UIViewController {
             srPlot.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
         ])
 
-//        srPlot.text = "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires."
+        srPlot.text = "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires."
     }
 }
 
