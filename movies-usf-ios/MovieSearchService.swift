@@ -20,7 +20,7 @@ final class MovieSearchServiceImpl: MovieSearchService {
 
     func searchMovie(name: String) -> Observable<MovieSearchResult?> {
 
-        let url = URL(string: "http://www.omdbapi.com/?t=\(name)")!
+        let url = URL(string: "http://www.omdbapi.com/?apikey=\(K.omdbApiKey)&t=\(name)")!
         let request = URLRequest(url: url)
 
         return URLSession.shared
