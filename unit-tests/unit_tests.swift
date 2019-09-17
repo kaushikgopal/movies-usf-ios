@@ -1,15 +1,14 @@
 //
-//  movies_usf_iosTests.swift
-//  movies-usf-iosTests
+//  unit_tests.swift
+//  unit-tests
 //
-//  Created by Kaushik Gopal on 9/4/19.
+//  Created by Kaushik Gopal on 9/17/19.
 //  Copyright © 2019 Kaushik Gopal. All rights reserved.
 //
 
 import XCTest
-@testable import movies_usf_ios
 
-class movies_usf_iosTests: XCTestCase {
+class unit_tests: XCTestCase {
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.

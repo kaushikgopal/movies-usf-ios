@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double RxBlockingVersionNumber;
-FOUNDATION_EXPORT const unsigned char RxBlockingVersionString[];
+FOUNDATION_EXPORT double Pods_unit_testsVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_unit_testsVersionString[];
 

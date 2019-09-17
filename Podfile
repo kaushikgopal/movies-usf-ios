@@ -6,7 +6,7 @@ target 'movies-usf-ios' do
     pod 'RxCocoa', '~> 5'
 end
 
-target 'movies-usf-iosTests' do
-    pod 'RxBlocking', '~> 5'
+target 'unit-tests' do
+    pod 'RxCocoa', '~> 5'
     pod 'RxTest', '~> 5'
 end
