@@ -57,7 +57,7 @@ final class MovieSearchVM {
         case noEffect
     }
     
-    init(api: MovieSearchService = MovieSearchServiceImpl()) {
+    init(_ api: MovieSearchService = MovieSearchServiceImpl()) {
         let results: Observable<ViewResult> = eventToResult(
             events: viewEventSubject,
             api: api
