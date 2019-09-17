@@ -140,8 +140,8 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                         moviePosterUrl: nil,
                         genres: "Genre (Action, Sci-Fi)",
                         plot: "If we have a short summary of the Movie's plot, it will show up here.",
-                        rating1: "IMDB :   7.1/10",
-                        rating2: "Rotten T :      81%"
+                        rating1: "IMDB :     X/10",
+                        rating2: "Rotten T :      XX%"
                     )
             case .searchMovieResult(let result):
 
