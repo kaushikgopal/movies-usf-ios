@@ -18,6 +18,8 @@
 		EB0726482329B1D900A17CE1 /* MovieSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0726472329B1D900A17CE1 /* MovieSearchVC.swift */; };
 		EB07264A2329B26B00A17CE1 /* MovieBucketListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */; };
 		EB07264C2329B2A400A17CE1 /* GenrePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */; };
+		EBED3C44233064B4001F8093 /* MovieSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBED3C43233064B4001F8093 /* MovieSearchService.swift */; };
+		EBED3C45233064B4001F8093 /* MovieSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBED3C43233064B4001F8093 /* MovieSearchService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +60,7 @@
 		EB0726472329B1D900A17CE1 /* MovieSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchVC.swift; sourceTree = "<group>"; };
 		EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBucketListVC.swift; sourceTree = "<group>"; };
 		EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenrePickerVC.swift; sourceTree = "<group>"; };
+		EBED3C43233064B4001F8093 /* MovieSearchService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieSearchService.swift; sourceTree = "<group>"; };
 		F5C88EFEE3C14A9A67583ED1 /* Pods-movies-usf-iosTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-movies-usf-iosTests.release.xcconfig"; path = "Target Support Files/Pods-movies-usf-iosTests/Pods-movies-usf-iosTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +116,7 @@
 		236DF01C2320B11F00C32E7F /* movies-usf-ios */ = {
 			isa = PBXGroup;
 			children = (
+				EBED3C43233064B4001F8093 /* MovieSearchService.swift */,
 				236DF01D2320B11F00C32E7F /* AppDelegate.swift */,
 				236DF0242320B12000C32E7F /* Assets.xcassets */,
 				236DF0292320B12000C32E7F /* Info.plist */,
@@ -381,6 +385,7 @@
 				EB0726482329B1D900A17CE1 /* MovieSearchVC.swift in Sources */,
 				EB07264A2329B26B00A17CE1 /* MovieBucketListVC.swift in Sources */,
 				238FD46A2320BBA300DC1709 /* LandingVC.swift in Sources */,
+				EBED3C44233064B4001F8093 /* MovieSearchService.swift in Sources */,
 				236DF01E2320B11F00C32E7F /* AppDelegate.swift in Sources */,
 				23D7325D232F2FDE007C3E82 /* MovieSearchVM.swift in Sources */,
 			);
@@ -390,6 +395,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EBED3C45233064B4001F8093 /* MovieSearchService.swift in Sources */,
 				236DF0332320B12000C32E7F /* movies_usf_iosTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
