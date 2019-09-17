@@ -78,7 +78,7 @@ class MovieSearchVC: UIViewController {
                     self?.srRating2.text = vs.rating2
                 },
                 onError: { err in
-                    print(" we got an error \(err)")
+                    print("🛠 we got an error \(err)")
                 }
             )
             .disposed(by: dbag)

@@ -18,7 +18,10 @@ final class MovieSearchVM {
     enum ViewResult {
         case screenLoadResult
         case searchMovieResult(
-            movieTitle: String
+            movieSearchText: String,
+            movieResult: MovieSearchResult?,
+            loading: Bool,
+            error: Error?
         )
     }
     
@@ -54,10 +57,10 @@ final class MovieSearchVM {
         case noEffect
     }
     
-    init() {
-
+    init(api: MovieSearchService = MovieSearchServiceImpl()) {
         let results: Observable<ViewResult> = eventToResult(
-            events: viewEventSubject
+            events: viewEventSubject,
+            api: api
         )
         .do(onNext: { print("🛠 MovieSearchVM: result \($0)") })
         .share()
@@ -82,7 +85,8 @@ final class MovieSearchVM {
 }
 
 private func eventToResult(
-    events: Observable<MovieSearchVM.ViewEvent>
+    events: Observable<MovieSearchVM.ViewEvent>,
+    api: MovieSearchService
 ) -> Observable<MovieSearchVM.ViewResult> {
     return events
         .do(onNext: { print("🛠 MovieSearchVM: event \($0)") })
@@ -91,7 +95,28 @@ private func eventToResult(
             case .screenLoad:
                 return Observable.just(.screenLoadResult)
             case .searchMovie(let (movieSearched)):
-                return Observable.just(.searchMovieResult(movieTitle: movieSearched))
+                let loadingResult: MovieSearchVM.ViewResult =
+                    .searchMovieResult(
+                        movieSearchText: movieSearched, movieResult: nil, loading: true, error: nil
+                    )
+                return api.searchMovie(name: movieSearched)
+                    .map {
+                        if let movie = $0 {
+                            return MovieSearchVM.ViewResult.searchMovieResult(
+                                movieSearchText: movieSearched, movieResult: movie, loading: false, error: nil
+                            )
+                        }
+                        return MovieSearchVM.ViewResult.searchMovieResult(
+                            movieSearchText: movieSearched, movieResult: nil, loading: false, error: nil
+                        )
+                    }
+                    .catchError { err in
+                        let result = MovieSearchVM.ViewResult.searchMovieResult(
+                            movieSearchText: movieSearched, movieResult: nil, loading: false, error: err
+                        )
+                        return Observable.just(result)
+                    }
+                    .startWith(loadingResult)
         }
     }
 }
@@ -99,12 +124,12 @@ private func eventToResult(
 private extension Observable where Element == MovieSearchVM.ViewResult {
     func resultToViewState() -> Observable<MovieSearchVM.ViewState> {
         let startingViewState = MovieSearchVM.ViewState(
-            movieTitle: "Loading..",
-            moviePosterUrl: "https://i.ytimg.com/vi/07So_lJQyqw/maxresdefault.jpg",
-            genres: "",
-            plot: "",
-            rating1: "",
-            rating2: ""
+            movieTitle: "Loading...",
+            moviePosterUrl: nil,
+            genres: "Genre (Action, Sci-Fi)",
+            plot: "If we have a short summary of the Movie's plot, it will show up here.",
+            rating1: "IMDB :   7.1/10",
+            rating2: "Rotten T :      81%"
         )
 
         return self.scan(startingViewState) { previousViewState, result in
@@ -118,14 +143,60 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                         rating1: "IMDB :   7.1/10",
                         rating2: "Rotten T :      81%"
                     )
-            case .searchMovieResult(let movieTitle):
-                return previousViewState.copy(
-                    movieTitle: movieTitle + " todo",
+            case .searchMovieResult(let result):
+
+                if result.loading {
+                    return MovieSearchVM.ViewState(
+                        movieTitle: "\(result.movieSearchText)",
+                        moviePosterUrl: nil,
+                        genres: "searching...",
+                        plot: "",
+                        rating1: "",
+                        rating2: ""
+                    )
+                }
+
+                if let err = result.error {
+                    return MovieSearchVM.ViewState(
+                        movieTitle: "\(result.movieSearchText)",
+                        moviePosterUrl: nil,
+                        genres: "error...☹️",
+                        plot: err.localizedDescription,
+                        rating1: "",
+                        rating2: ""
+                    )
+                }
+
+                if let movie = result.movieResult {
+                    let imdbRating: String = movie.Ratings
+                        .first(where: { $0.Source == "Internet Movie Database" })
+                        .map { rating in
+                            "IMDB :   \(rating.Value)"
+                        } ?? "IMDB :   XXX"
+
+                    let rtRating: String = movie.Ratings
+                        .first(where: { $0.Source == "Rotten Tomatoes" })
+                        .map { rating in
+                            "Rotten T :      \(rating.Value)"
+                        } ?? "Rotten T :      XXX"
+
+                    return MovieSearchVM.ViewState(
+                        movieTitle: movie.Title,
+                        moviePosterUrl: movie.Poster,
+                        genres: movie.Genre,
+                        plot: movie.Poster,
+                        rating1: imdbRating,
+                        rating2: rtRating
+                    )
+                }
+
+                return MovieSearchVM.ViewState(
+                    movieTitle: "\(result.movieSearchText)",
                     moviePosterUrl: nil,
-                    genres: "Genre (Action, Sci-Fi)",
-                    plot: "If we have a short summary of the Movie's plot, it will show up here.",
-                    rating1: "IMDB :   7.1/10",
-                    rating2: "Rotten T :      81%"
+                    genres: "not found...☹️",
+                    plot: "",
+                    rating1: "",
+                    rating2: ""
                 )
             }
         }
