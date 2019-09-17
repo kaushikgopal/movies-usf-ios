@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 protocol MovieSearchService {
     func searchMovie(name: String) -> Observable<MovieSearchResult?>
