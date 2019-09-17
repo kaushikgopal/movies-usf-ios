@@ -1,4 +1,5 @@
 use_frameworks!
+platform :ios, '12.4'
 
 target 'movies-usf-ios' do
     pod 'RxSwift', '~> 5'

@@ -544,6 +544,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 60CB9BE2D5CFF85F42B310FC /* Pods-movies-usf-ios.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JNJKQAJDF7;
@@ -563,6 +564,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4D4413A6AFD30A2923FCF6DF /* Pods-movies-usf-ios.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JNJKQAJDF7;
@@ -582,7 +584,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E2664E48AD90009243D7BE /* Pods-movies-usf-iosTests.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "movies-usf-iosTests/Info.plist";
@@ -603,7 +605,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AA9906A3B09D46FF11E02B55 /* Pods-movies-usf-iosTests.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "movies-usf-iosTests/Info.plist";
@@ -623,7 +625,7 @@
 		236DF0492320B12000C32E7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "movies-usf-iosUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -642,7 +644,7 @@
 		236DF04A2320B12000C32E7F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "movies-usf-iosUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
