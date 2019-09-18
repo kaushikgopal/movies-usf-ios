@@ -21,8 +21,13 @@ final class MovieSearchServiceImpl: MovieSearchService {
 
     func searchMovie(name: String) -> Observable<MovieSearchResult?> {
 
-        let url = URL(string: "http://www.omdbapi.com/?apikey=\(K.omdbApiKey)&t=\(name)")!
-        return RxAlamofire.requestData(.get, url)
+        let params: [String: Any] = [
+            "t": name,
+            "apikey": K.omdbApiKey
+        ]
+
+        let url = URL(string: "http://www.omdbapi.com/")!
+        return RxAlamofire.requestData(.get, url, parameters: params)
             .map { (_, data) in
                 return try JSONDecoder().decode(MovieSearchResult.self, from: data)
             }
