@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 import RxCocoa
+import RxAlamofire
 
 protocol MovieSearchService {
     func searchMovie(name: String) -> Observable<MovieSearchResult?>
@@ -21,14 +22,9 @@ final class MovieSearchServiceImpl: MovieSearchService {
     func searchMovie(name: String) -> Observable<MovieSearchResult?> {
 
         let url = URL(string: "http://www.omdbapi.com/?apikey=\(K.omdbApiKey)&t=\(name)")!
-        let request = URLRequest(url: url)
-
-        return URLSession.shared
-            .rx
-            .data(request: request)
-            .map { data in
-                let decoder = JSONDecoder()
-                return try decoder.decode(MovieSearchResult.self, from: data)
+        return RxAlamofire.requestData(.get, url)
+            .map { (_, data) in
+                return try JSONDecoder().decode(MovieSearchResult.self, from: data)
             }
     }
 }
