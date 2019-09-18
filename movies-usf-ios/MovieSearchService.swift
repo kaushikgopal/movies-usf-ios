@@ -27,21 +27,55 @@ final class MovieSearchServiceImpl: MovieSearchService {
         ]
 
         let url = URL(string: "http://www.omdbapi.com/")!
-        return RxAlamofire.requestJSON(.get, url, parameters: params)
-            .map { (_, data) in
-                print("debugging \(data)")
-                return nil
-//                return try JSONDecoder().decode(MovieSearchResult.self, from: data)
+        return RxAlamofire.requestString(.get, url, parameters: params)
+            .map { (_, jsonString) in
+                // print("debugging \(jsonString)")
+                let data = jsonString.filter { !$0.isNewline }.data(using: .utf8)!
+                return try JSONDecoder().decode(MovieSearchResult.self, from: data)
             }
     }
 }
 
 struct MovieSearchResult: Codable {
-    let Title: String
-    let Genre: String
-    let Plot: String
-    let Poster: String
-    let Ratings: [Rating]
+    let searchSuccess: Bool
+    let searchErrorMessage: String
+
+    let title: String
+    let genre: String
+    let plot: String
+    let posterUrl: String
+    let ratings: [Rating]?
+
+    // MARK: Decodable
+
+    private enum CodingKeys: String, CodingKey {
+        case searchSuccess = "Response"
+        case searchErrorMessage = "Error"
+        case title = "Title"
+        case genre = "Genre"
+        case plot = "Plot"
+        case posterUrl = "Poster"
+        case ratings = "Ratings"
+    }
+
+    // MARK: Decoder (custom)
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        if let searchSuccessString: String = try container.decodeIfPresent(String.self, forKey: .searchSuccess) {
+            searchSuccess = searchSuccessString.lowercased() == "true" ? true : false
+        } else {
+            searchSuccess = false
+        }
+
+        searchErrorMessage = try container.decodeIfPresent(String.self, forKey: .searchErrorMessage) ?? ""
+        title = try container.decodeIfPresent(String.self, forKey: .title) ?? ""
+        genre = try container.decodeIfPresent(String.self, forKey: .genre) ?? ""
+        plot = try container.decodeIfPresent(String.self, forKey: .plot) ?? ""
+        posterUrl = try container.decodeIfPresent(String.self, forKey: .posterUrl) ?? ""
+        ratings = try container.decodeIfPresent([Rating].self, forKey: .ratings)
+    }
 }
 
 struct Rating: Codable {

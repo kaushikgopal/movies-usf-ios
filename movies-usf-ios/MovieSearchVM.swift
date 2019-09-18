@@ -168,23 +168,34 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                 }
 
                 if let movie = result.movieResult {
-                    let imdbRating: String = movie.Ratings
+
+                    if !movie.searchSuccess {
+                        return previousViewState.copy(
+                            moviePosterUrl: nil,
+                            genres: "not found...☹️",
+                            plot: movie.searchErrorMessage,
+                            rating1: "",
+                            rating2: ""
+                        )
+                    }
+
+                    let imdbRating: String = movie.ratings?
                         .first(where: { $0.Source == "Internet Movie Database" })
                         .map { rating in
                             "IMDB :   \(rating.Value)"
                         } ?? "IMDB :   XXX"
 
-                    let rtRating: String = movie.Ratings
+                    let rtRating: String = movie.ratings?
                         .first(where: { $0.Source == "Rotten Tomatoes" })
                         .map { rating in
                             "Rotten T :      \(rating.Value)"
                         } ?? "Rotten T :      XXX"
 
                     return MovieSearchVM.ViewState(
-                        movieTitle: movie.Title,
-                        moviePosterUrl: movie.Poster,
-                        genres: movie.Genre,
-                        plot: movie.Plot,
+                        movieTitle: movie.title,
+                        moviePosterUrl: movie.posterUrl,
+                        genres: movie.genre,
+                        plot: movie.plot,
                         rating1: imdbRating,
                         rating2: rtRating
                     )
@@ -194,7 +205,7 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                     movieTitle: "\(result.movieSearchText)",
                     moviePosterUrl: nil,
                     genres: "not found...☹️",
-                    plot: "OMDB may not have that movie in their database",
+                    plot: "",
                     rating1: "",
                     rating2: ""
                 )
