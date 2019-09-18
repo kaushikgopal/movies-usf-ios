@@ -50,8 +50,8 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vs0.movieTitle, "Movie Title (YYYY)")
         XCTAssertEqual(vs0.genres, "Genre (Action, Sci-Fi)")
         XCTAssertEqual(vs0.plot, "If we have a short summary of the Movie's plot, it will show up here.")
-        XCTAssertEqual(vs0.rating1, "IMDB :     X/10")
-        XCTAssertEqual(vs0.rating2, "Rotten T :      XX%")
+        XCTAssertEqual(vs0.rating1, "IMDB :           X/10")
+        XCTAssertEqual(vs0.rating2, "Rotten T:         X %")
     }
 
     func test_givenBladeMovieExists_whenSearchingForTheMovie_thenMovieDisplays() {
@@ -84,8 +84,8 @@ class MovieSearchVMTest: XCTestCase {
             "https://m.media-amazon.com/images/M/MV5BOTk2NDNjZWQtMGY0Mi00YTY2LWE5MzctMGRhZmNlYzljYTg5XkEyXkFqcGdeQXVyMTAyNjg4NjE0._V1_SX300.jpg"
         )
         XCTAssertEqual(vs1.plot, "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires.")
-        XCTAssertEqual(vs1.rating1, "IMDB :   7.1/10")
-        XCTAssertEqual(vs1.rating2, "Rotten T :      54%")
+        XCTAssertEqual(vs1.rating1, "IMDB :         7.1/10")
+        XCTAssertEqual(vs1.rating2, "Rotten T:         54%")
     }
 
     func test_givenMovieDoesNotExist_whenSearchingForTheMovie_thenShowMovieNotFoundError() {

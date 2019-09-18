@@ -135,13 +135,14 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
         return self.scan(startingViewState) { previousViewState, result in
             switch result {
                 case .screenLoadResult:
+                    let (r1, r2) = self.formattedRatings(nil, useTemplate: true)
                     return previousViewState.copy(
                         movieTitle: "Movie Title (YYYY)",
                         moviePosterUrl: nil,
                         genres: "Genre (Action, Sci-Fi)",
                         plot: "If we have a short summary of the Movie's plot, it will show up here.",
-                        rating1: "IMDB :     X/10",
-                        rating2: "Rotten T :      XX%"
+                        rating1: r1,
+                        rating2: r2
                     )
             case .searchMovieResult(let result):
 
@@ -179,17 +180,8 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                         )
                     }
 
-                    let imdbRating: String = movie.ratings?
-                        .first(where: { $0.Source == "Internet Movie Database" })
-                        .map { rating in
-                            "IMDB :   \(rating.Value)"
-                        } ?? "IMDB :   XXX"
-
-                    let rtRating: String = movie.ratings?
-                        .first(where: { $0.Source == "Rotten Tomatoes" })
-                        .map { rating in
-                            "Rotten T :      \(rating.Value)"
-                        } ?? "Rotten T :      XXX"
+                    let (imdbRating, rtRating): (String, String) =
+                        self.formattedRatings(movie.ratings)
 
                     return MovieSearchVM.ViewState(
                         movieTitle: movie.title,
@@ -220,5 +212,48 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                 return .noEffect
             }
         }
+    }
+    
+    private func formattedRatings(_ ratings: [Rating]?, useTemplate: Bool = false) -> (String, String) {
+        var rs: [Rating]? = ratings
+        
+        if rs == nil {
+            if useTemplate {
+                rs = [
+                    Rating(Source: "Internet Movie Database", Value: "X/10"),
+                    Rating(Source: "Rotten Tomatoes", Value: "X %")
+                ]
+            } else {
+                return ("", "")
+            }
+        }
+        
+        let imdbRating: String = rs!
+            .first(where: { $0.Source == "Internet Movie Database" })
+            .map { rating in
+                let ratingPrefix = "IMDB :"
+                let ratingSuffix = " \(rating.Value)"
+                
+                return ratingPrefix.padding(
+                    toLength: 20 - ratingSuffix.count,
+                    withPad: " ",
+                    startingAt: 0
+                ) + " \(ratingSuffix)"
+            }!
+        
+        let rtRating: String = rs!
+            .first(where: { $0.Source == "Rotten Tomatoes" })
+            .map { rating in
+                let ratingPrefix = "Rotten T:"
+                let ratingSuffix = " \(rating.Value)"
+                
+                return ratingPrefix.padding(
+                    toLength: 20 - ratingSuffix.count,
+                    withPad: " ",
+                    startingAt: 0
+                    ) + " \(ratingSuffix)"
+            }!
+        
+        return (imdbRating, rtRating)
     }
 }
