@@ -194,7 +194,7 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                     movieTitle: "\(result.movieSearchText)",
                     moviePosterUrl: nil,
                     genres: "not found...☹️",
-                    plot: "",
+                    plot: "OMDB may not have that movie in their database",
                     rating1: "",
                     rating2: ""
                 )

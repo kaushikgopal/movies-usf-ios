@@ -88,21 +88,74 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vs1.rating2, "Rotten T :      54%")
     }
 
+    func test_givenMovieDoesNotExist_whenSearchingForTheMovie_thenShowMovieNotFoundError() {
+        let api: MovieSearchService = FakeMovieSearchService()
+        let viewModel = MovieSearchVM(api)
+        let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
+        viewModel.viewState
+            .subscribe(vsObserver)
+            .disposed(by: dbag)
+
+        scheduler.scheduleAt(0) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.screenLoad)
+        }
+        scheduler.scheduleAt(1) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.searchMovie("Blade Runner 2099"))
+        }
+        scheduler.start()
+
+
+        let vs1: MovieSearchVM.ViewState =
+            vsObserver.events
+                .filter { $0.time == 1 }
+                .compactMap { $0.value.element }
+                .last!
+
+        XCTAssertEqual(vs1.movieTitle, "Blade Runner 2099")
+        XCTAssertEqual(vs1.genres, "not found...☹️")
+        XCTAssertEqual(vs1.moviePosterUrl, nil)
+        XCTAssertEqual(vs1.plot, "Movie not found!")
+        XCTAssertEqual(vs1.rating1, "")
+        XCTAssertEqual(vs1.rating2, "")
+    }
 }
 
 final class FakeMovieSearchService: MovieSearchService {
 
     func searchMovie(name: String) -> Observable<MovieSearchResult?> {
-        let jsonString =
-        """
-        {"Title":"Blade","Year":"1998","Rated":"R","Released":"21 Aug 1998","Runtime":"120 min","Genre":"Action, Horror, Sci-Fi","Director":"Stephen Norrington","Writer":"David S. Goyer","Actors":"Wesley Snipes, Stephen Dorff, Kris Kristofferson, N'Bushe Wright","Plot":"A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires.","Language":"English, Russian, Serbian","Country":"USA","Awards":"4 wins & 8 nominations.","Poster":"https://m.media-amazon.com/images/M/MV5BOTk2NDNjZWQtMGY0Mi00YTY2LWE5MzctMGRhZmNlYzljYTg5XkEyXkFqcGdeQXVyMTAyNjg4NjE0._V1_SX300.jpg","Ratings":[{"Source":"Internet Movie Database","Value":"7.1/10"},{"Source":"Rotten Tomatoes","Value":"54%"},{"Source":"Metacritic","Value":"45/100"}],"Metascore":"45","imdbRating":"7.1","imdbVotes":"229,728","imdbID":"tt0120611","Type":"movie","DVD":"22 Dec 1998","BoxOffice":"N/A","Production":"New Line Cinema","Website":"N/A","Response":"True"}
-        """
-        let decoder = JSONDecoder()
-        let data = jsonString.filter { !$0.isNewline }.data(using: .utf8)!
-        guard let bladeMovieSearchResult: MovieSearchResult =
-            try? decoder.decode(MovieSearchResult.self, from: data) else {
-                return Observable.empty()
+
+        switch name {
+        case "Blade Runner 2099":
+            let jsonString =
+            """
+            {"Error":"Movie not found!","Response":"False"}
+            """
+            let data = jsonString.filter { !$0.isNewline }.data(using: .utf8)!
+            guard let bladeMovieSearchResult: MovieSearchResult =
+                try? JSONDecoder().decode(MovieSearchResult.self, from: data) else {
+                    return Observable.empty()
             }
-        return Observable.just(bladeMovieSearchResult)
+            return Observable.just(bladeMovieSearchResult)
+        case "Blade":
+            let jsonString =
+            """
+            {"Title":"Blade","Year":"1998","Rated":"R","Released":"21 Aug 1998","Runtime":"120 min","Genre":"Action, Horror, Sci-Fi","Director":"Stephen Norrington","Writer":"David S. Goyer","Actors":"Wesley Snipes, Stephen Dorff, Kris Kristofferson, N'Bushe Wright","Plot":"A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires.","Language":"English, Russian, Serbian","Country":"USA","Awards":"4 wins & 8 nominations.","Poster":"https://m.media-amazon.com/images/M/MV5BOTk2NDNjZWQtMGY0Mi00YTY2LWE5MzctMGRhZmNlYzljYTg5XkEyXkFqcGdeQXVyMTAyNjg4NjE0._V1_SX300.jpg","Ratings":[{"Source":"Internet Movie Database","Value":"7.1/10"},{"Source":"Rotten Tomatoes","Value":"54%"},{"Source":"Metacritic","Value":"45/100"}],"Metascore":"45","imdbRating":"7.1","imdbVotes":"229,728","imdbID":"tt0120611","Type":"movie","DVD":"22 Dec 1998","BoxOffice":"N/A","Production":"New Line Cinema","Website":"N/A","Response":"True"}
+            """
+            let data = jsonString.filter { !$0.isNewline }.data(using: .utf8)!
+            guard let bladeMovieSearchResult: MovieSearchResult =
+                try? JSONDecoder().decode(MovieSearchResult.self, from: data) else {
+                    return Observable.empty()
+                }
+            return Observable.just(bladeMovieSearchResult)
+
+        default:
+            return Observable.empty()
+        }
+    }
+}
+
+final class FakeMovieSearchServiceNotFound: MovieSearchService {
+    func searchMovie(name: String) -> Observable<MovieSearchResult?> {
+        return Observable.just(nil)
     }
 }
