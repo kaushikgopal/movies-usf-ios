@@ -184,7 +184,7 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                         movieTitle: movie.Title,
                         moviePosterUrl: movie.Poster,
                         genres: movie.Genre,
-                        plot: movie.Poster,
+                        plot: movie.Plot,
                         rating1: imdbRating,
                         rating2: rtRating
                     )
