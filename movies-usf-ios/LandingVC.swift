@@ -10,6 +10,8 @@ import UIKit
 
 class LandingVC: UITabBarController {
 
+    let movieRepo = MovieRepositoryImpl()
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
@@ -26,7 +28,7 @@ class LandingVC: UITabBarController {
     }
 
     func setupTabs() {
-        let movieSearchTab = MovieSearchVC()
+        let movieSearchTab = MovieSearchVC(movieRepo)
         movieSearchTab.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
 
         let movieBucketListTab = MovieBucketListVC()

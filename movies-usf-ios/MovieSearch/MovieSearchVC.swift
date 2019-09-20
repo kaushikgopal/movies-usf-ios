@@ -19,8 +19,17 @@ class MovieSearchVC: UIViewController {
     private let srRating1 = UITextField()
     private let srRating2 = UITextField()
     
-    private let viewModel = MovieSearchVM()
+    private let viewModel: MovieSearchVM
     private let dbag = DisposeBag()
+
+    init(_ movieRepo: MovieRepository) {
+        self.viewModel = MovieSearchVM(repo: movieRepo)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
 
     override func loadView() {
         super.loadView()

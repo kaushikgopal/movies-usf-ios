@@ -8,11 +8,11 @@
 
 import RxSwift
 
-protocol MovieSearchRepository {
+protocol MovieRepository {
     func movieOnce(title: String) -> Observable<MovieSearchResult?>
 }
 
-final class MovieSearchRepositoryImpl: MovieSearchRepository {
+final class MovieRepositoryImpl: MovieRepository {
 
     init(_ service: MovieSearchService = MovieSearchServiceImpl()) {
         searchService = service
