@@ -23,7 +23,7 @@ final class MovieSearchRepositoryImpl: MovieSearchRepository {
             return Observable.just(movie)
         }
 
-        return searchService.searchMovie(name: title)
+        return searchService.searchMovie(name: title.lowercased())
             .do(onNext: { [unowned self] result in
                 if result != nil {
                     self.fauxDb[title.lowercased()] = result
