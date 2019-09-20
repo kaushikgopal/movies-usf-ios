@@ -205,6 +205,20 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertNotNil(vs2.first!.moviePosterUrl)
         XCTAssertNil(vs2.last!.moviePosterUrl)
     }
+
+    // given: movie result displayed
+    // when : clicking the movie result
+    // then : toggle it as a bookmarked movie
+    func test_movieResultShown_clickingMovieResult_togglesBookmark() {
+        // show the movie result
+
+        // click the movie
+            // send view effect stating it was added to bookmarks
+            // confirm movie repo has this bookmark
+        // click the movie again
+            // send view effect stating it was removed from bookmarks
+            // confirm movie repo does not have this movie bookmarked anymore
+    }
 }
 
 final class FakeMovieSearchService: MovieSearchService {
