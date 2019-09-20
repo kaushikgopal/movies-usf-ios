@@ -9,10 +9,14 @@
 import RxSwift
 
 final class MovieSearchVM {
-    init(_ searchApi: MovieSearchService =  MovieSearchServiceImpl()) {
+    convenience init(_ api: MovieSearchService = MovieSearchServiceImpl()) {
+        self.init(searchRepo: MovieSearchRepositoryImpl(api))
+    }
+
+    required init(searchRepo repo: MovieSearchRepository) {
         let results: Observable<ViewResult> = eventToResult(
             events: viewEventSubject,
-            repo: MovieSearchRepositoryImpl(searchApi)
+            repo: repo
         )
         .do(onNext: { print("🛠 MovieSearchVM: result \($0)") })
         .share()
