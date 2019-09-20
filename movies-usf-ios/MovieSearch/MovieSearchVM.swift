@@ -101,9 +101,8 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
             case .searchMovieResult(let result):
 
                 if result.loading {
-                    return MovieSearchVM.ViewState(
+                    return previousViewState.copy(
                         movieTitle: "\(result.movieSearchText)",
-                        moviePosterUrl: nil,
                         genres: "searching...",
                         plot: "",
                         rating1: "",
@@ -251,10 +250,10 @@ extension MovieSearchVM {
             plot: String? = nil,
             rating1: String? = nil,
             rating2: String? = nil
-            ) -> ViewState {
+        ) -> ViewState {
             return ViewState(
                 movieTitle: movieTitle ?? self.movieTitle,
-                moviePosterUrl: moviePosterUrl,
+                moviePosterUrl: moviePosterUrl ?? self.moviePosterUrl,
                 genres: genres ?? self.genres,
                 plot: plot ?? self.plot,
                 rating1: rating1 ?? self.rating1,
