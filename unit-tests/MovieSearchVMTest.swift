@@ -159,6 +159,52 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vs1.rating1, "")
         XCTAssertEqual(vs1.rating2, "")
     }
+
+    // given: movie result shown already
+    // when : searching for new movie
+    // then : nil-ify poster url appropriately
+    //          don't nil-ify in searching state
+    //          but do it after search is complete
+    //          and search result is not the same as before
+    func test_movieResultShown_searchingForNewMovie_nilifyPosterAppropriately() {
+        // this might seem like a weird experience
+        // but we're doing it to prevent multiple network req calls to image poster loading
+        // especially if the image lands up being the same
+
+        let viewModel = MovieSearchVM(FakeMovieSearchService())
+        let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
+        viewModel.viewState
+            .subscribe(vsObserver)
+            .disposed(by: dbag)
+
+        scheduler.scheduleAt(0) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.screenLoad)
+        }
+        scheduler.scheduleAt(1) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.searchMovie("blade"))
+        }
+        scheduler.scheduleAt(2) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.searchMovie("Blades"))
+        }
+        scheduler.start()
+
+        let vs1: [MovieSearchVM.ViewState] =
+            vsObserver.events
+                .filter { $0.time == 1 }
+                .compactMap { $0.value.element }
+
+        let vs2: [MovieSearchVM.ViewState] =
+            vsObserver.events
+                .filter { $0.time == 2 }
+                .compactMap { $0.value.element }
+
+        XCTAssertEqual(vs1.count, 2)
+        XCTAssertEqual(vs2.count, 2)
+
+        XCTAssertEqual(vs2.first!.genres, "searching...")
+        XCTAssertNotNil(vs2.first!.moviePosterUrl)
+        XCTAssertNil(vs2.last!.moviePosterUrl)
+    }
 }
 
 final class FakeMovieSearchService: MovieSearchService {
@@ -190,13 +236,7 @@ final class FakeMovieSearchService: MovieSearchService {
             return Observable.just(bladeMovieSearchResult)
 
         default:
-            return Observable.empty()
+            return Observable.just(nil)
         }
-    }
-}
-
-final class FakeMovieSearchServiceNotFound: MovieSearchService {
-    func searchMovie(name: String) -> Observable<MovieSearchResult?> {
-        return Observable.just(nil)
     }
 }
