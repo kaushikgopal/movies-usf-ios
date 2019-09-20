@@ -191,7 +191,7 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                     withPad: " ",
                     startingAt: 0
                 ) + " \(ratingSuffix)"
-            }!
+            } ?? ""
         
         let rtRating: String = rs!
             .first(where: { $0.Source == "Rotten Tomatoes" })
@@ -204,7 +204,7 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                     withPad: " ",
                     startingAt: 0
                     ) + " \(ratingSuffix)"
-            }!
+            } ?? ""
         
         return (imdbRating, rtRating)
     }

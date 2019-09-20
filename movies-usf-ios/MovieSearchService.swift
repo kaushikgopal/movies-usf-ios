@@ -29,7 +29,7 @@ final class MovieSearchServiceImpl: MovieSearchService {
         let url = URL(string: "http://www.omdbapi.com/")!
         return RxAlamofire.requestString(.get, url, parameters: params)
             .map { (_, jsonString) in
-                // print("debugging \(jsonString)")
+                print("debugging \(jsonString)")
                 let data = jsonString.filter { !$0.isNewline }.data(using: .utf8)!
                 return try JSONDecoder().decode(MovieSearchResult.self, from: data)
             }
