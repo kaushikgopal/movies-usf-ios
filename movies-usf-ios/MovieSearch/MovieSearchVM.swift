@@ -23,6 +23,7 @@ final class MovieSearchVM {
         
         viewState = results.resultToViewState()
             .do(onNext: { print("🛠 MovieSearchVM: view[state] \($0)") })
+            .distinctUntilChanged()
         viewEffects = results.resultToViewEffect()
             .do(onNext: { print("🛠 MovieSearchVM: view[effect] \($0)") })
     }
@@ -234,7 +235,7 @@ private extension MovieSearchVM {
 }
 
 extension MovieSearchVM {
-    struct ViewState {
+    struct ViewState: Equatable {
         let movieTitle: String
         let moviePosterUrl: String?
         let genres: String
