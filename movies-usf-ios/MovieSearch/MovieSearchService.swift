@@ -20,7 +20,6 @@ final class MovieSearchServiceImpl: MovieSearchService {
     let session = URLSession.shared
 
     func searchMovie(name: String) -> Observable<MovieSearchResult?> {
-
         let params: [String: Any] = [
             "t": name,
             "apikey": K.omdbApiKey

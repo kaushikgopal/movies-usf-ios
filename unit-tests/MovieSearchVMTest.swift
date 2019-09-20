@@ -16,11 +16,14 @@ class MovieSearchVMTest: XCTestCase {
 
     var dbag: DisposeBag!
     var scheduler: TestScheduler!
+    var repo: MovieSearchRepository!
 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         scheduler = TestScheduler(initialClock: 0)
         dbag = DisposeBag()
+
+        repo = MovieSearchRepositoryImpl(FakeMovieSearchService())
     }
 
     override func tearDown() {
@@ -28,8 +31,7 @@ class MovieSearchVMTest: XCTestCase {
     }
 
     func test_whenScreenLoaded_thenHelpfulHintsProvided() {
-        let api: MovieSearchService = FakeMovieSearchService()
-        let viewModel = MovieSearchVM(api)
+        let viewModel = MovieSearchVM(repo)
         let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
         viewModel.viewState
             .subscribe(vsObserver)
@@ -55,8 +57,7 @@ class MovieSearchVMTest: XCTestCase {
     }
 
     func test_givenBladeMovieExists_whenSearchingForTheMovie_thenMovieDisplays() {
-        let api: MovieSearchService = FakeMovieSearchService()
-        let viewModel = MovieSearchVM(api)
+        let viewModel = MovieSearchVM(repo)
         let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
         viewModel.viewState
             .subscribe(vsObserver)
@@ -89,8 +90,7 @@ class MovieSearchVMTest: XCTestCase {
     }
 
     func test_givenMovieDoesNotExist_whenSearchingForTheMovie_thenShowMovieNotFoundError() {
-        let api: MovieSearchService = FakeMovieSearchService()
-        let viewModel = MovieSearchVM(api)
+        let viewModel = MovieSearchVM(repo)
         let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
         viewModel.viewState
             .subscribe(vsObserver)

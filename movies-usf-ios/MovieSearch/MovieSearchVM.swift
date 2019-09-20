@@ -9,10 +9,10 @@
 import RxSwift
 
 final class MovieSearchVM {
-    init(_ api: MovieSearchService = MovieSearchServiceImpl()) {
+    init(_ repo: MovieSearchRepository = MovieSearchRepositoryImpl()) {
         let results: Observable<ViewResult> = eventToResult(
             events: viewEventSubject,
-            api: api
+            repo: repo
         )
         .do(onNext: { print("🛠 MovieSearchVM: result \($0)") })
         .share()
@@ -35,7 +35,7 @@ final class MovieSearchVM {
 
 private func eventToResult(
     events: Observable<MovieSearchVM.ViewEvent>,
-    api: MovieSearchService
+    repo: MovieSearchRepository
 ) -> Observable<MovieSearchVM.ViewResult> {
     return events
         .do(onNext: { print("🛠 MovieSearchVM: event \($0)") })
@@ -48,7 +48,7 @@ private func eventToResult(
                     .searchMovieResult(
                         movieSearchText: movieSearched, movieResult: nil, loading: true, error: nil
                     )
-                return api.searchMovie(name: movieSearched)
+                return repo.movieOnce(title: movieSearched)
                     .map {
                         if let movie = $0 {
                             return MovieSearchVM.ViewResult.searchMovieResult(

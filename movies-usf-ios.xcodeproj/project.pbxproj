@@ -15,6 +15,7 @@
 		EB0726482329B1D900A17CE1 /* MovieSearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0726472329B1D900A17CE1 /* MovieSearchVC.swift */; };
 		EB07264A2329B26B00A17CE1 /* MovieBucketListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */; };
 		EB07264C2329B2A400A17CE1 /* GenrePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */; };
+		EB2C569E23355B9300F24898 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2C569D23355B9300F24898 /* MovieRepository.swift */; };
 		EB5FEE6123316C5C00508AEE /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB5FEE6023316C5C00508AEE /* RxCocoa.framework */; };
 		EB5FEE6323316F6200508AEE /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5FEE6223316F6200508AEE /* K.swift */; };
 		EB88EE3223317D5F00B0BD33 /* unit_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88EE3123317D5F00B0BD33 /* unit_tests.swift */; };
@@ -54,6 +55,7 @@
 		EB0726472329B1D900A17CE1 /* MovieSearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieSearchVC.swift; sourceTree = "<group>"; };
 		EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBucketListVC.swift; sourceTree = "<group>"; };
 		EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenrePickerVC.swift; sourceTree = "<group>"; };
+		EB2C569D23355B9300F24898 /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
 		EB5FEE6023316C5C00508AEE /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB5FEE6223316F6200508AEE /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		EB88EE2F23317D5F00B0BD33 /* unit-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "unit-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,15 +122,14 @@
 		236DF01C2320B11F00C32E7F /* movies-usf-ios */ = {
 			isa = PBXGroup;
 			children = (
-				EBED3C43233064B4001F8093 /* MovieSearchService.swift */,
-				236DF01D2320B11F00C32E7F /* AppDelegate.swift */,
 				236DF0242320B12000C32E7F /* Assets.xcassets */,
 				236DF0292320B12000C32E7F /* Info.plist */,
+				236DF01D2320B11F00C32E7F /* AppDelegate.swift */,
 				238FD4692320BBA300DC1709 /* LandingVC.swift */,
-				EB0726472329B1D900A17CE1 /* MovieSearchVC.swift */,
+				EB2C569D23355B9300F24898 /* MovieRepository.swift */,
+				EB2C569C23355B3400F24898 /* MovieSearch */,
 				EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */,
 				EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */,
-				23D7325C232F2FDE007C3E82 /* MovieSearchVM.swift */,
 				EB5FEE6223316F6200508AEE /* K.swift */,
 			);
 			path = "movies-usf-ios";
@@ -147,6 +148,16 @@
 				734B25B4BF57907CBCDB9B80 /* Pods-unit-tests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		EB2C569C23355B3400F24898 /* MovieSearch */ = {
+			isa = PBXGroup;
+			children = (
+				EBED3C43233064B4001F8093 /* MovieSearchService.swift */,
+				EB0726472329B1D900A17CE1 /* MovieSearchVC.swift */,
+				23D7325C232F2FDE007C3E82 /* MovieSearchVM.swift */,
+			);
+			path = MovieSearch;
 			sourceTree = "<group>";
 		};
 		EB88EE3023317D5F00B0BD33 /* unit-tests */ = {
@@ -345,6 +356,7 @@
 			files = (
 				EB07264C2329B2A400A17CE1 /* GenrePickerVC.swift in Sources */,
 				EB0726482329B1D900A17CE1 /* MovieSearchVC.swift in Sources */,
+				EB2C569E23355B9300F24898 /* MovieRepository.swift in Sources */,
 				EB07264A2329B26B00A17CE1 /* MovieBucketListVC.swift in Sources */,
 				238FD46A2320BBA300DC1709 /* LandingVC.swift in Sources */,
 				EBED3C44233064B4001F8093 /* MovieSearchService.swift in Sources */,
