@@ -91,6 +91,42 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vs1.rating2, "Rotten T:         54%")
     }
 
+    // given: movie "Blade" exists
+    // when : searching for it in lower case
+    // then : show result
+    func test_movieBladeExists_searchingForItInLowerCase_showMovieResult() {
+        let viewModel = MovieSearchVM(FakeMovieSearchService())
+        let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
+        viewModel.viewState
+            .subscribe(vsObserver)
+            .disposed(by: dbag)
+
+        scheduler.scheduleAt(0) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.screenLoad)
+        }
+        scheduler.scheduleAt(1) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.searchMovie("blade"))
+        }
+        scheduler.start()
+
+
+        let vs1: MovieSearchVM.ViewState =
+            vsObserver.events
+                .filter { $0.time == 1 }
+                .compactMap { $0.value.element }
+                .last!
+
+        XCTAssertEqual(vs1.movieTitle, "Blade")
+        XCTAssertEqual(vs1.genres, "Action, Horror, Sci-Fi")
+        XCTAssertEqual(
+            vs1.moviePosterUrl,
+            "https://m.media-amazon.com/images/M/MV5BOTk2NDNjZWQtMGY0Mi00YTY2LWE5MzctMGRhZmNlYzljYTg5XkEyXkFqcGdeQXVyMTAyNjg4NjE0._V1_SX300.jpg"
+        )
+        XCTAssertEqual(vs1.plot, "A half-vampire, half-mortal man becomes a protector of the mortal race, while slaying evil vampires.")
+        XCTAssertEqual(vs1.rating1, "IMDB :         7.1/10")
+        XCTAssertEqual(vs1.rating2, "Rotten T:         54%")
+    }
+
     // given: movie Blade Runner 2099 does not exist
     // when : searching for it
     // then : show movie not found error
