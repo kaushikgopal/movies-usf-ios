@@ -9,54 +9,6 @@
 import RxSwift
 
 final class MovieSearchVM {
-
-    enum ViewEvent {
-        case screenLoad
-        case searchMovie(String)
-    }
-    
-    enum ViewResult {
-        case screenLoadResult
-        case searchMovieResult(
-            movieSearchText: String,
-            movieResult: MovieSearchResult?,
-            loading: Bool,
-            error: Error?
-        )
-    }
-    
-    struct ViewState {
-        let movieTitle: String
-        let moviePosterUrl: String?
-        let genres: String
-        let plot: String
-        let rating1: String
-        let rating2: String
-
-        // helpful function to prevent mutating existing state
-        func copy(
-            movieTitle: String? = nil,
-            moviePosterUrl: String? = nil,
-            genres: String? = nil,
-            plot: String? = nil,
-            rating1: String? = nil,
-            rating2: String? = nil
-        ) -> ViewState {
-            return ViewState(
-                movieTitle: movieTitle ?? self.movieTitle,
-                moviePosterUrl: moviePosterUrl,
-                genres: genres ?? self.genres,
-                plot: plot ?? self.plot,
-                rating1: rating1 ?? self.rating1,
-                rating2: rating2 ?? self.rating2
-            )
-        }
-    }
-    
-    enum ViewEffect {
-        case noEffect
-    }
-    
     init(_ api: MovieSearchService = MovieSearchServiceImpl()) {
         let results: Observable<ViewResult> = eventToResult(
             events: viewEventSubject,
@@ -71,17 +23,14 @@ final class MovieSearchVM {
             .do(onNext: { print("🛠 MovieSearchVM: view[effect] \($0)") })
     }
 
-    // MARK: Public api
-    
     let viewState: Observable<ViewState>
     let viewEffects: Observable<ViewEffect>
+
+    private let viewEventSubject: PublishSubject<ViewEvent> = .init()
 
     func processViewEvent(event: ViewEvent) {
         viewEventSubject.onNext(event)
     }
-
-    // MARK: Private properties
-    private let viewEventSubject: PublishSubject<ViewEvent> = .init()
 }
 
 private func eventToResult(
@@ -214,7 +163,10 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
         }
     }
     
-    private func formattedRatings(_ ratings: [Rating]?, useTemplate: Bool = false) -> (String, String) {
+    private func formattedRatings(
+        _ ratings: [Rating]?,
+        useTemplate: Bool = false
+    ) -> (String, String) {
         var rs: [Rating]? = ratings
         
         if rs == nil {
@@ -255,5 +207,58 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
             }!
         
         return (imdbRating, rtRating)
+    }
+}
+
+extension MovieSearchVM {
+    enum ViewEvent {
+        case screenLoad
+        case searchMovie(String)
+    }
+}
+
+private extension MovieSearchVM {
+    enum ViewResult {
+        case screenLoadResult
+        case searchMovieResult(
+            movieSearchText: String,
+            movieResult: MovieSearchResult?,
+            loading: Bool,
+            error: Error?
+        )
+    }
+}
+
+extension MovieSearchVM {
+    struct ViewState {
+        let movieTitle: String
+        let moviePosterUrl: String?
+        let genres: String
+        let plot: String
+        let rating1: String
+        let rating2: String
+
+        // helpful function to prevent mutating existing state
+        func copy(
+            movieTitle: String? = nil,
+            moviePosterUrl: String? = nil,
+            genres: String? = nil,
+            plot: String? = nil,
+            rating1: String? = nil,
+            rating2: String? = nil
+            ) -> ViewState {
+            return ViewState(
+                movieTitle: movieTitle ?? self.movieTitle,
+                moviePosterUrl: moviePosterUrl,
+                genres: genres ?? self.genres,
+                plot: plot ?? self.plot,
+                rating1: rating1 ?? self.rating1,
+                rating2: rating2 ?? self.rating2
+            )
+        }
+    }
+
+    enum ViewEffect {
+        case noEffect
     }
 }
