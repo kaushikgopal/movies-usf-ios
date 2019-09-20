@@ -27,7 +27,9 @@ class MovieSearchVMTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func test_whenScreenLoaded_thenHelpfulHintsProvided() {
+    // when : screen loads
+    // then : show helpful hints
+    func test_screenLoads_showHelpfulHints() {
         let viewModel = MovieSearchVM(FakeMovieSearchService())
         let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
         viewModel.viewState
@@ -53,7 +55,10 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vs0.rating2, "Rotten T:         X %")
     }
 
-    func test_givenBladeMovieExists_whenSearchingForTheMovie_thenMovieDisplays() {
+    // given: movie "Blade" exists
+    // when : searching for movie "Blade"
+    // then : show result
+    func test_movieBladeExists_searchingForIt_showMovieResult() {
         let viewModel = MovieSearchVM(FakeMovieSearchService())
         let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
         viewModel.viewState
@@ -86,7 +91,10 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vs1.rating2, "Rotten T:         54%")
     }
 
-    func test_givenMovieDoesNotExist_whenSearchingForTheMovie_thenShowMovieNotFoundError() {
+    // given: movie Blade Runner 2099 does not exist
+    // when : searching for it
+    // then : show movie not found error
+    func test_movieDoesNotExist_searchingForIt_showMovieNotFoundError() {
         let viewModel = MovieSearchVM(FakeMovieSearchService())
         let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
         viewModel.viewState
