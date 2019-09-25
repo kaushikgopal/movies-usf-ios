@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,7 +15,10 @@
 		EB07264A2329B26B00A17CE1 /* MovieBucketListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */; };
 		EB07264C2329B2A400A17CE1 /* GenrePickerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */; };
 		EB2C569E23355B9300F24898 /* MovieRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB2C569D23355B9300F24898 /* MovieRepository.swift */; };
-		EB5FEE6123316C5C00508AEE /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB5FEE6023316C5C00508AEE /* RxCocoa.framework */; };
+		EB5D8353233BE0B200BB6B75 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = EB5D8352233BE0B200BB6B75 /* RxCocoa */; };
+		EB5D8355233BE0B200BB6B75 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EB5D8354233BE0B200BB6B75 /* RxSwift */; };
+		EB5D8357233BE0B200BB6B75 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = EB5D8356233BE0B200BB6B75 /* RxTest */; };
+		EB5D835A233BE0FC00BB6B75 /* RxAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = EB5D8359233BE0FC00BB6B75 /* RxAlamofire */; };
 		EB5FEE6323316F6200508AEE /* K.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB5FEE6223316F6200508AEE /* K.swift */; };
 		EB88EE3223317D5F00B0BD33 /* unit_tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88EE3123317D5F00B0BD33 /* unit_tests.swift */; };
 		EB88EE3A23317DBE00B0BD33 /* MovieSearchVMTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB88EE3923317DBE00B0BD33 /* MovieSearchVMTest.swift */; };
@@ -43,7 +46,6 @@
 		EB0726492329B26B00A17CE1 /* MovieBucketListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieBucketListVC.swift; sourceTree = "<group>"; };
 		EB07264B2329B2A400A17CE1 /* GenrePickerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenrePickerVC.swift; sourceTree = "<group>"; };
 		EB2C569D23355B9300F24898 /* MovieRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieRepository.swift; sourceTree = "<group>"; };
-		EB5FEE6023316C5C00508AEE /* RxCocoa.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB5FEE6223316F6200508AEE /* K.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = K.swift; sourceTree = "<group>"; };
 		EB88EE2F23317D5F00B0BD33 /* unit-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "unit-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB88EE3123317D5F00B0BD33 /* unit_tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = unit_tests.swift; sourceTree = "<group>"; };
@@ -57,7 +59,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB5FEE6123316C5C00508AEE /* RxCocoa.framework in Frameworks */,
+				EB5D8355233BE0B200BB6B75 /* RxSwift in Frameworks */,
+				EB5D835A233BE0FC00BB6B75 /* RxAlamofire in Frameworks */,
+				EB5D8353233BE0B200BB6B75 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,28 +69,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB5D8357233BE0B200BB6B75 /* RxTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		21990B48ACD1D319258DA463 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				EB5FEE6023316C5C00508AEE /* RxCocoa.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		236DF0112320B11F00C32E7F = {
 			isa = PBXGroup;
 			children = (
 				236DF01C2320B11F00C32E7F /* movies-usf-ios */,
 				EB88EE3023317D5F00B0BD33 /* unit-tests */,
 				236DF01B2320B11F00C32E7F /* Products */,
-				3DC0C020DC5F3412A255F420 /* Pods */,
-				21990B48ACD1D319258DA463 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -113,13 +108,6 @@
 				EB5FEE6223316F6200508AEE /* K.swift */,
 			);
 			path = "movies-usf-ios";
-			sourceTree = "<group>";
-		};
-		3DC0C020DC5F3412A255F420 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		EB2C569C23355B3400F24898 /* MovieSearch */ = {
@@ -158,6 +146,11 @@
 			dependencies = (
 			);
 			name = "movies-usf-ios";
+			packageProductDependencies = (
+				EB5D8352233BE0B200BB6B75 /* RxCocoa */,
+				EB5D8354233BE0B200BB6B75 /* RxSwift */,
+				EB5D8359233BE0FC00BB6B75 /* RxAlamofire */,
+			);
 			productName = "movies-usf-ios";
 			productReference = 236DF01A2320B11F00C32E7F /* movies-usf-ios.app */;
 			productType = "com.apple.product-type.application";
@@ -176,6 +169,9 @@
 				EB88EE3523317D5F00B0BD33 /* PBXTargetDependency */,
 			);
 			name = "unit-tests";
+			packageProductDependencies = (
+				EB5D8356233BE0B200BB6B75 /* RxTest */,
+			);
 			productName = "unit-tests";
 			productReference = EB88EE2F23317D5F00B0BD33 /* unit-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -208,6 +204,10 @@
 				Base,
 			);
 			mainGroup = 236DF0112320B11F00C32E7F;
+			packageReferences = (
+				EB5D8351233BE0B200BB6B75 /* XCRemoteSwiftPackageReference "RxSwift" */,
+				EB5D8358233BE0FC00BB6B75 /* XCRemoteSwiftPackageReference "RxAlamofire" */,
+			);
 			productRefGroup = 236DF01B2320B11F00C32E7F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -498,6 +498,48 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EB5D8351233BE0B200BB6B75 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+		EB5D8358233BE0FC00BB6B75 /* XCRemoteSwiftPackageReference "RxAlamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxAlamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EB5D8352233BE0B200BB6B75 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB5D8351233BE0B200BB6B75 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		EB5D8354233BE0B200BB6B75 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB5D8351233BE0B200BB6B75 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+		EB5D8356233BE0B200BB6B75 /* RxTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB5D8351233BE0B200BB6B75 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxTest;
+		};
+		EB5D8359233BE0FC00BB6B75 /* RxAlamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EB5D8358233BE0FC00BB6B75 /* XCRemoteSwiftPackageReference "RxAlamofire" */;
+			productName = RxAlamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 236DF0122320B11F00C32E7F /* Project object */;
 }
