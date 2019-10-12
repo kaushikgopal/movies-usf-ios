@@ -12,7 +12,7 @@ final class MovieSearchVM {
     convenience init(_ api: MovieSearchService = MovieSearchServiceImpl()) {
         self.init(repo: MovieRepositoryImpl(api))
     }
-
+    
     required init(repo: MovieRepository) {
         let results: Observable<ViewResult> = eventToResult(
             events: viewEventSubject,
@@ -20,6 +20,11 @@ final class MovieSearchVM {
         )
         .do(onNext: { print("🛠 MovieSearchVM: result \($0)") })
         .share()
+    
+        viewEventSubject
+            .scan(seedViewState) { oldViewState, event in
+                oldViewState
+            }
         
         viewState = results.resultToViewState()
             .do(onNext: { print("🛠 MovieSearchVM: view[state] \($0)") })
@@ -32,10 +37,20 @@ final class MovieSearchVM {
     let viewEffects: Observable<ViewEffect>
 
     private let viewEventSubject: PublishSubject<ViewEvent> = .init()
-
+    private let seedViewState = MovieSearchVM.ViewState(
+        movieTitle: "Loading...",
+        moviePosterUrl: nil,
+        genres: "Genre (Action, Sci-Fi)",
+        plot: "If we have a short summary of the Movie's plot, it will show up here.",
+        rating1: "IMDB :   7.1/10",
+        rating2: "Rotten T :      81%"
+    )
+    
+    
     func processViewEvent(event: ViewEvent) {
         viewEventSubject.onNext(event)
     }
+    
 }
 
 private func eventToResult(
