@@ -11,7 +11,8 @@ import RxSwift
 protocol MovieRepository {
     func movieOnce(title: String) -> Observable<MovieSearchResult?>
     func toggleMovie(title: String) -> Observable<MovieSearchResult>
-    func movieBookmarksListOnce() -> Observable<[MovieSearchResult]>
+    func bookmarkListOnce() -> Observable<[MovieSearchResult]>
+    func bookmarkCount() -> Int
 }
 
 final class MovieRepositoryImpl: MovieRepository {
@@ -48,10 +49,14 @@ final class MovieRepositoryImpl: MovieRepository {
         )
     }
 
-    func movieBookmarksListOnce() -> Observable<[MovieSearchResult]> {
+    func bookmarkListOnce() -> Observable<[MovieSearchResult]> {
         return Observable.just(
             fauxDb.values.filter { $0.bookmarked }
         )
+    }
+    
+    func bookmarkCount() -> Int {
+        fauxDb.values.filter { $0.bookmarked }.count
     }
     
     private let searchService: MovieSearchService

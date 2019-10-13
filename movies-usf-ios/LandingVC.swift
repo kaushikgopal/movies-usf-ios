@@ -31,14 +31,14 @@ class LandingVC: UITabBarController {
         let movieSearchTab = MovieSearchVC(movieRepo)
         movieSearchTab.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
 
-        let movieBucketListTab = MovieBucketListVC()
-        movieBucketListTab.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
+        let bookmarksTab = BookmarksVC(movieRepo)
+        bookmarksTab.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
 
         let genrePickerTab = GenrePickerVC()
         genrePickerTab.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
 
         viewControllers = [
-            movieSearchTab, movieBucketListTab, genrePickerTab
+            movieSearchTab, bookmarksTab, genrePickerTab
         ]
     }
 }
