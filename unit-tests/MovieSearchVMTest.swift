@@ -11,6 +11,7 @@
 import XCTest
 import RxSwift
 import RxTest
+import RxBlocking
 
 class MovieSearchVMTest: XCTestCase {
 
@@ -211,13 +212,45 @@ class MovieSearchVMTest: XCTestCase {
     // then : toggle it as a bookmarked movie
     func test_movieResultShown_clickingMovieResult_togglesBookmark() {
         // show the movie result
+        let movieRepo = MovieRepositoryImpl(FakeMovieSearchService())
+        let viewModel = MovieSearchVM(repo: movieRepo)
 
-        // click the movie
-            // send view effect stating it was added to bookmarks
-            // confirm movie repo has this bookmark
-        // click the movie again
-            // send view effect stating it was removed from bookmarks
-            // confirm movie repo does not have this movie bookmarked anymore
+        let vsObserver = scheduler.createObserver(MovieSearchVM.ViewState.self)
+        let veObserver = scheduler.createObserver(MovieSearchVM.ViewEffect.self)
+        viewModel.viewState.subscribe(vsObserver).disposed(by: dbag)
+        viewModel.viewEffects.subscribe(veObserver).disposed(by: dbag)
+
+        scheduler.scheduleAt(0) {
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.screenLoad)
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.searchMovie("blade"))
+        }
+        scheduler.scheduleAt(1) {
+            // click movie once to bookmark it
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.toggleMovie("blade"))
+        }
+        scheduler.scheduleAt(2) {
+            // click movie again to unbookmark
+            viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.toggleMovie("blade"))
+        }
+
+        scheduler.start()
+
+        
+        // 1: movie toggled once
+        let ve1: [MovieSearchVM.ViewEffect] =
+            veObserver.events
+                .filter { $0.time == 1 }
+                .compactMap { $0.value.element }
+
+        XCTAssertEqual(vsObserver.events.filter { $0.time == 1 }.count, 0)
+        XCTAssertEqual(ve1.count, 1)
+        XCTAssertEqual(ve1.first!, MovieSearchVM.ViewEffect.addedBookmark("Bookmarked Blade"))
+        XCTAssertEqual(try! movieRepo.movieBookmarksListOnce().toBlocking().toArray().count, 1)
+        
+        let ve2: [MovieSearchVM.ViewEffect] =
+            veObserver.events
+                .filter { $0.time == 2 }
+                .compactMap { $0.value.element }
     }
 }
 

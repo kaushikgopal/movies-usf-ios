@@ -71,6 +71,9 @@ private func eventToResult(
                         return Observable.just(result)
                     }
                     .startWith(loadingResult)
+            case .toggleMovie(let (movieToggled)):
+                return repo.toggleMovie(title: movieToggled)
+                        .map { MovieSearchVM.ViewResult.toggleMovieResult(movieResult: $0) }
         }
     }
 }
@@ -98,62 +101,65 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
                         rating1: r1,
                         rating2: r2
                     )
+            
             case .searchMovieResult(let result):
-
-                if result.loading {
-                    return previousViewState.copy(
-                        movieTitle: "\(result.movieSearchText)",
-                        genres: "searching...",
-                        plot: "",
-                        rating1: "",
-                        rating2: ""
-                    )
-                }
-
-                if let err = result.error {
-                    return MovieSearchVM.ViewState(
-                        movieTitle: "\(result.movieSearchText)",
-                        moviePosterUrl: nil,
-                        genres: "error...☹️",
-                        plot: err.localizedDescription,
-                        rating1: "",
-                        rating2: ""
-                    )
-                }
-
-                if let movie = result.movieResult {
-
-                    if !movie.searchSuccess {
+                    if result.loading {
                         return previousViewState.copy(
-                            moviePosterUrl: nil,
-                            genres: "not found...☹️",
-                            plot: movie.searchErrorMessage,
+                            movieTitle: "\(result.movieSearchText)",
+                            genres: "searching...",
+                            plot: "",
                             rating1: "",
                             rating2: ""
                         )
                     }
 
-                    let (imdbRating, rtRating): (String, String) =
-                        self.formattedRatings(movie.ratings)
+                    if let err = result.error {
+                        return MovieSearchVM.ViewState(
+                            movieTitle: "\(result.movieSearchText)",
+                            moviePosterUrl: nil,
+                            genres: "error...☹️",
+                            plot: err.localizedDescription,
+                            rating1: "",
+                            rating2: ""
+                        )
+                    }
+
+                    if let movie = result.movieResult {
+
+                        if !movie.searchSuccess {
+                            return previousViewState.copy(
+                                moviePosterUrl: nil,
+                                genres: "not found...☹️",
+                                plot: movie.searchErrorMessage,
+                                rating1: "",
+                                rating2: ""
+                            )
+                        }
+
+                        let (imdbRating, rtRating): (String, String) =
+                            self.formattedRatings(movie.ratings)
+
+                        return MovieSearchVM.ViewState(
+                            movieTitle: movie.title,
+                            moviePosterUrl: movie.posterUrl,
+                            genres: movie.genre,
+                            plot: movie.plot,
+                            rating1: imdbRating,
+                            rating2: rtRating
+                        )
+                    }
 
                     return MovieSearchVM.ViewState(
-                        movieTitle: movie.title,
-                        moviePosterUrl: movie.posterUrl,
-                        genres: movie.genre,
-                        plot: movie.plot,
-                        rating1: imdbRating,
-                        rating2: rtRating
+                        movieTitle: "\(result.movieSearchText)",
+                        moviePosterUrl: nil,
+                        genres: "not found...☹️",
+                        plot: "",
+                        rating1: "",
+                        rating2: ""
                     )
-                }
-
-                return MovieSearchVM.ViewState(
-                    movieTitle: "\(result.movieSearchText)",
-                    moviePosterUrl: nil,
-                    genres: "not found...☹️",
-                    plot: "",
-                    rating1: "",
-                    rating2: ""
-                )
+                
+            case .toggleMovieResult(_):
+                return previousViewState.copy()
             }
         }
     }
@@ -163,6 +169,12 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
             switch result {
             case .screenLoadResult, .searchMovieResult(_):
                 return .noEffect
+            case .toggleMovieResult(let (movieResult)):
+                if movieResult.bookmarked {
+                    return .addedBookmark("Bookmarked \(movieResult.title)")
+                } else {
+                    return .removedBookmark("Removed from Bookmarks")
+                }
             }
         }
     }
@@ -218,6 +230,7 @@ extension MovieSearchVM {
     enum ViewEvent {
         case screenLoad
         case searchMovie(String)
+        case toggleMovie(String)
     }
 }
 
@@ -229,6 +242,9 @@ private extension MovieSearchVM {
             movieResult: MovieSearchResult?,
             loading: Bool,
             error: Error?
+        )
+        case toggleMovieResult(
+            movieResult: MovieSearchResult
         )
     }
 }
@@ -262,7 +278,9 @@ extension MovieSearchVM {
         }
     }
 
-    enum ViewEffect {
+    enum ViewEffect: Equatable {
         case noEffect
+        case addedBookmark(String)
+        case removedBookmark(String)
     }
 }

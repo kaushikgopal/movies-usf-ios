@@ -45,6 +45,8 @@ struct MovieSearchResult: Codable {
     let posterUrl: String
     let ratings: [Rating]?
 
+    var bookmarked: Bool = false
+
     // MARK: Decodable
 
     private enum CodingKeys: String, CodingKey {
@@ -62,7 +64,7 @@ struct MovieSearchResult: Codable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
-        if let searchSuccessString: String = try container.decodeIfPresent(String.self, forKey: .searchSuccess) {
+        if let searchSuccessString = try container.decodeIfPresent(String.self, forKey: .searchSuccess) {
             searchSuccess = searchSuccessString.lowercased() == "true" ? true : false
         } else {
             searchSuccess = false
