@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieBookmarksVC: UIViewController {
+class BookmarksVC: UIViewController {
     init(_ movieRepo: MovieRepository) {
         // self.viewModel = MovieSearchVM(repo: movieRepo)
         self.repo = movieRepo
@@ -34,7 +34,7 @@ class MovieBookmarksVC: UIViewController {
         
         registerTableViewDelegates()
         
-        tableView.rowHeight = 100
+        tableView.rowHeight = 200
         tableView.backgroundColor = UIColor.black
         tableView.pin(to: view)
     }
@@ -43,7 +43,7 @@ class MovieBookmarksVC: UIViewController {
     private let repo: MovieRepository
 }
 
-extension MovieBookmarksVC: UITableViewDelegate, UITableViewDataSource {
+extension BookmarksVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return repo.bookmarkCount()
     }
@@ -56,5 +56,4 @@ extension MovieBookmarksVC: UITableViewDelegate, UITableViewDataSource {
         tableView.delegate = self
         tableView.dataSource = self
     }
-
 }
