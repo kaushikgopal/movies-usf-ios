@@ -32,10 +32,6 @@ class MovieSearchVC: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) is not supported")
     }
-
-    override func loadView() {
-        super.loadView()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +66,7 @@ class MovieSearchVC: UIViewController {
 
     private func bindUI() {
         sQuery.addTarget(self, action: #selector(searchPressed), for: .editingDidEndOnExit)
+        
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
         srImage.addGestureRecognizer(imageTap)
         srImage.isUserInteractionEnabled = true
