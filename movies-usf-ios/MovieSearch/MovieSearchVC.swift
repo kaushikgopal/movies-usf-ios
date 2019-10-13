@@ -227,26 +227,3 @@ class MovieSearchVC: UIViewController {
         ])
     }
 }
-
-extension UIImageView {
-    func load(imageUrl: String?) {
-        
-        if imageUrl == nil {
-            self.image = nil
-            self.backgroundColor = .lightGray
-            return
-        }
-        
-        let url = URL(string: imageUrl!)!
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.image = image
-                        self?.backgroundColor = .darkGray
-                    }
-                }
-            }
-        }
-    }
-}
