@@ -5,6 +5,8 @@ PODS:
   - RxAlamofire/Core (5.0.0):
     - Alamofire (~> 4.8)
     - RxSwift (~> 5.0)
+  - RxBlocking (5.0.0):
+    - RxSwift (~> 5)
   - RxCocoa (5.0.0):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -16,6 +18,7 @@ PODS:
 
 DEPENDENCIES:
   - RxAlamofire
+  - RxBlocking (~> 5)
   - RxCocoa (~> 5)
   - RxSwift (~> 5)
   - RxTest (~> 5)
@@ -24,6 +27,7 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - RxAlamofire
+    - RxBlocking
     - RxCocoa
     - RxRelay
     - RxSwift
@@ -32,11 +36,12 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   RxAlamofire: e7875a012aff55345672d0f70a2a9cd6aeb0f211
+  RxBlocking: c67185d26498ea3cbe3e121917c3c16739e43123
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   RxTest: 4349afe98f564e0a9bc19063368904622d17d49a
 
-PODFILE CHECKSUM: bf85efadc1ab29063f9750fda6ace2ddd15719d7
+PODFILE CHECKSUM: 01170d91845120aec389ca952c063cad276f3f92
 
 COCOAPODS: 1.7.5

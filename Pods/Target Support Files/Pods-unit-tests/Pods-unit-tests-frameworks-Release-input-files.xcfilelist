@@ -2,4 +2,5 @@ ${PODS_ROOT}/Target Support Files/Pods-unit-tests/Pods-unit-tests-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework
 ${BUILT_PRODUCTS_DIR}/RxRelay/RxRelay.framework
 ${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework
+${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework
 ${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework

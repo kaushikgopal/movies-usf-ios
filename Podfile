@@ -10,4 +10,5 @@ end
 target 'unit-tests' do
     pod 'RxCocoa', '~> 5'
     pod 'RxTest', '~> 5'
+    pod 'RxBlocking', '~> 5'
 end
