@@ -34,8 +34,10 @@ class BookmarksVC: UIViewController {
         
         registerTableViewDelegates()
         
-        tableView.rowHeight = BookmarkCell.HEIGHT
+        tableView.rowHeight = CGFloat(BookmarkCell.HEIGHT)
         tableView.backgroundColor = UIColor.black
+        tableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.IDENTIFIER)
+        
         tableView.pin(to: view)
     }
     
@@ -45,11 +47,14 @@ class BookmarksVC: UIViewController {
 
 extension BookmarksVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repo.bookmarkCount()
+//        return repo.bookmarkCount()
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: BookmarkCell.IDENTIFIER) as! BookmarkCell
+//        cell.bind(content: )
+        return cell
     }
     
     func registerTableViewDelegates() {
