@@ -158,8 +158,8 @@ class MovieSearchVC: UIViewController {
         NSLayoutConstraint.activate([
             srImage.topAnchor.constraint(equalTo: sQuery.bottomAnchor, constant: 12),
             srImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            srImage.heightAnchor.constraint(equalToConstant: 192),
-            srImage.widthAnchor.constraint(equalToConstant: 128)
+            srImage.widthAnchor.constraint(equalToConstant: 120),
+            srImage.heightAnchor.constraint(equalTo: srImage.widthAnchor, multiplier: 1.5)
         ])
 
         // setup search result name
