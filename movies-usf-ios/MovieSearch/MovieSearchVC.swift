@@ -150,7 +150,8 @@ class MovieSearchVC: UIViewController {
 
         // setup search result image
         srImage.backgroundColor = .darkGray
-        srImage.contentMode = .scaleAspectFit
+        srImage.clipsToBounds = true
+        srImage.layer.cornerRadius = 5
 
         srImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(srImage)
