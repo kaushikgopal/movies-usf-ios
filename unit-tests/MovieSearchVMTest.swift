@@ -220,6 +220,9 @@ class MovieSearchVMTest: XCTestCase {
         viewModel.viewState.subscribe(vsObserver).disposed(by: dbag)
         viewModel.viewEffects.subscribe(veObserver).disposed(by: dbag)
 
+        var bookMarkCountT1 = -1
+        var bookMarkCountT2 = -1
+        
         scheduler.scheduleAt(0) {
             viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.screenLoad)
             viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.searchMovie("blade"))
@@ -227,14 +230,17 @@ class MovieSearchVMTest: XCTestCase {
         scheduler.scheduleAt(1) {
             // click movie once to bookmark it
             viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.toggleMovie("blade"))
+            bookMarkCountT1 = try! movieRepo
+                .movieBookmarksListOnce().toBlocking().toArray().first!.count
         }
         scheduler.scheduleAt(2) {
             // click movie again to unbookmark
             viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.toggleMovie("blade"))
+            bookMarkCountT2 = try! movieRepo
+                .movieBookmarksListOnce().toBlocking().toArray().first!.count
         }
 
         scheduler.start()
-
         
         // 1: movie toggled once
         let ve1: [MovieSearchVM.ViewEffect] =
@@ -245,17 +251,17 @@ class MovieSearchVMTest: XCTestCase {
         XCTAssertEqual(vsObserver.events.filter { $0.time == 1 }.count, 0)
         XCTAssertEqual(ve1.count, 1)
         XCTAssertEqual(ve1.first!, MovieSearchVM.ViewEffect.addedBookmark("Bookmarked Blade"))
-        XCTAssertEqual(try! movieRepo.movieBookmarksListOnce().toBlocking().toArray().count, 1)
+        XCTAssertEqual(bookMarkCountT1, 1)
         
         let ve2: [MovieSearchVM.ViewEffect] =
             veObserver.events
                 .filter { $0.time == 2 }
                 .compactMap { $0.value.element }
 
-         XCTAssertEqual(vsObserver.events.filter { $0.time == 2 }.count, 0)
-         XCTAssertEqual(ve2.count, 1)
-         XCTAssertEqual(ve2.first!, MovieSearchVM.ViewEffect.removedBookmark("Removed from Bookmarks"))
-         XCTAssertEqual(try! movieRepo.movieBookmarksListOnce().toBlocking().toArray().count, 0)
+        XCTAssertEqual(vsObserver.events.filter { $0.time == 2 }.count, 0)
+        XCTAssertEqual(ve2.count, 1)
+        XCTAssertEqual(ve2.first!, MovieSearchVM.ViewEffect.removedBookmark("Removed from Bookmarks"))
+        XCTAssertEqual(bookMarkCountT2, 0)
     }
 }
 

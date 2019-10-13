@@ -35,7 +35,7 @@ final class MovieRepositoryImpl: MovieRepository {
     
     func toggleMovie(title: String) -> Observable<MovieSearchResult> {
         if var movie = fauxDb[title.lowercased()] {
-            movie.bookmarked = true
+            movie.bookmarked.toggle()
             fauxDb[title.lowercased()] = movie // is this needed ?
             return Observable.just(movie)
         }
