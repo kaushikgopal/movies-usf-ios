@@ -33,14 +33,13 @@ extension UIImageView {
 }
 
 
-//extension : UIView {
-//
-//    /*
-//    // Only override draw() if you perform custom drawing.
-//    // An empty implementation adversely affects performance during animation.
-//    override func draw(_ rect: CGRect) {
-//        // Drawing code
-//    }
-//    */
-//
-//}
+extension UIView {
+    
+    func pin(to parentView: UIView) {
+        translatesAutoresizingMaskIntoConstraints = false
+        topAnchor.constraint(equalTo: parentView.topAnchor).isActive = true
+        leadingAnchor.constraint(equalTo: parentView.leadingAnchor).isActive = true
+        trailingAnchor.constraint(equalTo: parentView.trailingAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: parentView.bottomAnchor).isActive = true
+    }
+}
