@@ -22,8 +22,8 @@ final class MovieSearchVM {
         .share()
         
         viewState = results.resultToViewState()
-            .do(onNext: { print("🛠 MovieSearchVM: view[state] \($0)") })
             .distinctUntilChanged()
+            .do(onNext: { print("🛠 MovieSearchVM: view[state] \($0)") })
         viewEffects = results.resultToViewEffect()
             .do(onNext: { print("🛠 MovieSearchVM: view[effect] \($0)") })
     }

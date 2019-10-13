@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import NotificationBannerSwift
 
 class MovieSearchVC: UIViewController {
 
@@ -21,6 +22,7 @@ class MovieSearchVC: UIViewController {
     
     private let viewModel: MovieSearchVM
     private let dbag = DisposeBag()
+    private var banner: NotificationBanner? = nil
 
     init(_ movieRepo: MovieRepository) {
         self.viewModel = MovieSearchVM(repo: movieRepo)
@@ -42,6 +44,7 @@ class MovieSearchVC: UIViewController {
         
         setupUI()
         bindViewState()
+        bindViewEffects()
         bindUI()
     }
 
@@ -67,12 +70,19 @@ class MovieSearchVC: UIViewController {
 
     private func bindUI() {
         sQuery.addTarget(self, action: #selector(searchPressed), for: .editingDidEndOnExit)
+        let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        srImage.addGestureRecognizer(imageTap)
+        srImage.isUserInteractionEnabled = true
     }
     
     @objc private func searchPressed() {
         viewModel.processViewEvent(event: .searchMovie(sQuery.text ?? ""))
     }
-    
+
+    @objc private func imageTapped() {
+        viewModel.processViewEvent(event: .toggleMovie(srTitle.text ?? ""))
+    }
+
     private func bindViewState() {
         viewModel.viewState
             .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
@@ -85,6 +95,32 @@ class MovieSearchVC: UIViewController {
                     self?.srPlot.text = vs.plot
                     self?.srRating1.text = vs.rating1
                     self?.srRating2.text = vs.rating2
+                },
+                onError: { err in
+                    print("🛠 we got an error \(err)")
+                }
+            )
+            .disposed(by: dbag)
+    }
+    
+    private func bindViewEffects() {
+        viewModel.viewEffects
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: { [weak self] ve in
+                    switch ve {
+                    case .addedBookmark(let (text)):
+                        self?.banner?.dismiss()
+                        self?.banner = NotificationBanner(title: text, style: .success)
+                        self?.banner?.show()
+                    case .removedBookmark(let (text)):
+                        self?.banner?.dismiss()
+                        self?.banner = NotificationBanner(title: text, style: .warning)
+                        self?.banner?.show()
+                    case .noEffect:
+                        print("no effect")
+                    }
                 },
                 onError: { err in
                     print("🛠 we got an error \(err)")
