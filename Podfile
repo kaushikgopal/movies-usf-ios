@@ -5,6 +5,7 @@ target 'movies-usf-ios' do
     pod 'RxSwift', '~> 5'
     pod 'RxCocoa', '~> 5'
     pod 'RxAlamofire'
+    pod 'NotificationBannerSwift'
 end
 
 target 'unit-tests' do
