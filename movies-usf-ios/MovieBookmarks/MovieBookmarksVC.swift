@@ -9,9 +9,16 @@
 import UIKit
 
 class MovieBookmarksVC: UIViewController {
+    init(_ movieRepo: MovieRepository) {
+        // self.viewModel = MovieSearchVM(repo: movieRepo)
+        self.repo = movieRepo
+        super.init(nibName: nil, bundle: nil)
+    }
 
-    var tableView = UITableView()
-
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) is not supported")
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -24,16 +31,21 @@ class MovieBookmarksVC: UIViewController {
     func setupUI() {
         // table view
         view.addSubview(tableView)
+        
         registerTableViewDelegates()
+        
         tableView.rowHeight = 100
         tableView.backgroundColor = UIColor.black
         tableView.pin(to: view)
     }
+    
+    private var tableView = UITableView()
+    private let repo: MovieRepository
 }
 
 extension MovieBookmarksVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return repo.bookmarkCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -31,7 +31,7 @@ class LandingVC: UITabBarController {
         let movieSearchTab = MovieSearchVC(movieRepo)
         movieSearchTab.tabBarItem = UITabBarItem(tabBarSystemItem: .search, tag: 0)
 
-        let bookmarksTab = MovieBookmarksVC()
+        let bookmarksTab = MovieBookmarksVC(movieRepo)
         bookmarksTab.tabBarItem = UITabBarItem(tabBarSystemItem: .bookmarks, tag: 0)
 
         let genrePickerTab = GenrePickerVC()
