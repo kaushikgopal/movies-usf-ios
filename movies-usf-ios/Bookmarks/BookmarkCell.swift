@@ -10,15 +10,43 @@ import UIKit
 
 class BookmarkCell: UITableViewCell {
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
+    static let HEIGHT = 200
+    
+    var moviePoster = UIImageView()
+    var movieTitle = UILabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        setupPosterView()
+        setupTitleView()
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-
+    
+    private func setupPosterView() {
+        addSubview(moviePoster)
+        moviePoster.layer.cornerRadius = 5
+        moviePoster.clipsToBounds = true
+        
+        moviePoster.translatesAutoresizingMaskIntoConstraints = false
+        moviePoster.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        moviePoster.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        moviePoster.heightAnchor.constraint(equalToConstant: CGFloat(BookmarkCell.HEIGHT - 20)).isActive = true
+        moviePoster.widthAnchor.constraint(equalTo: moviePoster.heightAnchor, multiplier: 1/1.5).isActive = true
+    }
+    
+    private func setupTitleView() {
+        addSubview(movieTitle)
+        movieTitle.numberOfLines = 0
+        movieTitle.adjustsFontSizeToFitWidth = true
+        
+        movieTitle.translatesAutoresizingMaskIntoConstraints = false
+        movieTitle.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        movieTitle.leadingAnchor.constraint(equalTo: moviePoster.trailingAnchor, constant: 20).isActive = true
+        movieTitle.heightAnchor.constraint(equalToConstant: CGFloat(BookmarkCell.HEIGHT - 20)).isActive = true
+        movieTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+    }
 }
