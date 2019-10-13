@@ -251,6 +251,11 @@ class MovieSearchVMTest: XCTestCase {
             veObserver.events
                 .filter { $0.time == 2 }
                 .compactMap { $0.value.element }
+
+         XCTAssertEqual(vsObserver.events.filter { $0.time == 2 }.count, 0)
+         XCTAssertEqual(ve2.count, 1)
+         XCTAssertEqual(ve2.first!, MovieSearchVM.ViewEffect.removedBookmark("Removed from Bookmarks"))
+         XCTAssertEqual(try! movieRepo.movieBookmarksListOnce().toBlocking().toArray().count, 0)
     }
 }
 
