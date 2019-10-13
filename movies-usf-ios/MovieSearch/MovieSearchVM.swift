@@ -25,6 +25,7 @@ final class MovieSearchVM {
             .distinctUntilChanged()
             .do(onNext: { print("🛠 MovieSearchVM: view[state] \($0)") })
         viewEffects = results.resultToViewEffect()
+            .filter { $0 != .noEffect }
             .do(onNext: { print("🛠 MovieSearchVM: view[effect] \($0)") })
     }
 
@@ -80,27 +81,20 @@ private func eventToResult(
 
 private extension Observable where Element == MovieSearchVM.ViewResult {
     func resultToViewState() -> Observable<MovieSearchVM.ViewState> {
+        let (r1, r2) = self.formattedRatings(nil, useTemplate: true)
         let startingViewState = MovieSearchVM.ViewState(
-            movieTitle: "Loading...",
+            movieTitle: "Movie Title (YYYY)",
             moviePosterUrl: nil,
             genres: "Genre (Action, Sci-Fi)",
             plot: "If we have a short summary of the Movie's plot, it will show up here.",
-            rating1: "IMDB :   7.1/10",
-            rating2: "Rotten T :      81%"
+            rating1: r1,
+            rating2: r2
         )
 
         return self.scan(startingViewState) { previousViewState, result in
             switch result {
                 case .screenLoadResult:
-                    let (r1, r2) = self.formattedRatings(nil, useTemplate: true)
-                    return previousViewState.copy(
-                        movieTitle: "Movie Title (YYYY)",
-                        moviePosterUrl: nil,
-                        genres: "Genre (Action, Sci-Fi)",
-                        plot: "If we have a short summary of the Movie's plot, it will show up here.",
-                        rating1: r1,
-                        rating2: r2
-                    )
+                    return previousViewState.copy()
             
             case .searchMovieResult(let result):
                     if result.loading {
