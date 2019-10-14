@@ -34,7 +34,7 @@ class BookmarksVC: UIViewController {
         
         registerTableViewDelegates()
         
-        tableView.rowHeight = CGFloat(BookmarkCell.HEIGHT)
+        tableView.rowHeight = BookmarkCell.HEIGHT
         tableView.backgroundColor = UIColor.black
         tableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.IDENTIFIER)
         
