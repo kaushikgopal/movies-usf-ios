@@ -13,10 +13,8 @@ import NotificationBannerSwift
 class MovieSearchVC: UIViewController {
 
     private let sQuery = UITextField()
-    private let srImage = UIImageView()
-    private let srTitle = UITextView()
-    private let srGenre = UITextField()
-    private let srPlot = UITextView()
+    
+    private let srInfoCell = BookmarkCell()
     private let srRating1 = UITextField()
     private let srRating2 = UITextField()
     
@@ -68,8 +66,7 @@ class MovieSearchVC: UIViewController {
         sQuery.addTarget(self, action: #selector(searchPressed), for: .editingDidEndOnExit)
         
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        srImage.addGestureRecognizer(imageTap)
-        srImage.isUserInteractionEnabled = true
+        srInfoCell.bind(clickListener: imageTap)
     }
     
     @objc private func searchPressed() {
@@ -77,7 +74,7 @@ class MovieSearchVC: UIViewController {
     }
 
     @objc private func imageTapped() {
-        viewModel.processViewEvent(event: .toggleMovie(srTitle.text ?? ""))
+        viewModel.processViewEvent(event: .toggleMovie(srInfoCell.movieTitleView.text ?? ""))
     }
 
     private func bindViewState() {
@@ -86,10 +83,13 @@ class MovieSearchVC: UIViewController {
             .observeOn(MainScheduler.instance)
             .subscribe(
                 onNext: { [weak self] vs in
-                    self?.srImage.load(imageUrl: vs.moviePosterUrl)
-                    self?.srTitle.text = vs.movieTitle
-                    self?.srGenre.text = vs.genres
-                    self?.srPlot.text = vs.plot
+                    self?.srInfoCell.bind(
+                        posterUrl: vs.moviePosterUrl,
+                        title: vs.movieTitle,
+                        genreInfo: vs.genres,
+                        plotSummary: vs.plot
+                    )
+                    
                     self?.srRating1.text = vs.rating1
                     self?.srRating2.text = vs.rating2
                 },
@@ -137,69 +137,25 @@ class MovieSearchVC: UIViewController {
         sQuery.textColor = .white
         sQuery.font = UIFont.boldSystemFont(ofSize: 28)
 
-        sQuery.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sQuery)
+        
+        sQuery.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             sQuery.topAnchor.constraint(equalTo: view.topAnchor, constant: 64),
             sQuery.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             sQuery.heightAnchor.constraint(equalToConstant: 64)
         ])
-
-        // setup search result image
-        srImage.backgroundColor = .darkGray
-        srImage.clipsToBounds = true
-        srImage.layer.cornerRadius = 5
-
-        srImage.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(srImage)
+        
+        // setup search result view
+        
+        view.addSubview(srInfoCell)
+        
+        srInfoCell.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            srImage.topAnchor.constraint(equalTo: sQuery.bottomAnchor, constant: 12),
-            srImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            srImage.widthAnchor.constraint(equalToConstant: 120),
-            srImage.heightAnchor.constraint(equalTo: srImage.widthAnchor, multiplier: 1.5)
-        ])
-
-        // setup search result name
-        srTitle.textColor = .white
-        srTitle.backgroundColor = .clear
-        srTitle.font = UIFont.boldSystemFont(ofSize: 22)
-        srTitle.isScrollEnabled = false
-        srTitle.isEditable = false
-        srTitle.sizeToFit()
-
-        srTitle.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(srTitle)
-        NSLayoutConstraint.activate([
-            srTitle.topAnchor.constraint(equalTo: srImage.topAnchor),
-            srTitle.leadingAnchor.constraint(equalTo: srImage.trailingAnchor, constant: 12),
-            srTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24)
-        ])
-
-        // setup search result genres
-        srGenre.textColor = .green
-        srGenre.font = UIFont.systemFont(ofSize: 16)
-
-        srGenre.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(srGenre)
-        NSLayoutConstraint.activate([
-            srGenre.topAnchor.constraint(equalTo: srTitle.bottomAnchor),
-            srGenre.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor, constant: 6),
-            srGenre.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
-        ])
-
-        // setup search result plot
-        srPlot.textColor = .gray
-        srPlot.backgroundColor = .clear
-        srPlot.isEditable = false
-        srPlot.font = UIFont.systemFont(ofSize: 16)
-
-        srPlot.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(srPlot)
-        NSLayoutConstraint.activate([
-            srPlot.topAnchor.constraint(equalTo: srGenre.bottomAnchor),
-            srPlot.bottomAnchor.constraint(equalTo: srImage.bottomAnchor),
-            srPlot.leadingAnchor.constraint(equalTo: srTitle.leadingAnchor),
-            srPlot.trailingAnchor.constraint(equalTo: srTitle.trailingAnchor)
+            srInfoCell.topAnchor.constraint(equalTo: sQuery.bottomAnchor, constant: 10),
+            srInfoCell.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            srInfoCell.heightAnchor.constraint(equalToConstant: BookmarkCell.HEIGHT),
+            srInfoCell.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
 
         // setup search result ratings
@@ -209,7 +165,7 @@ class MovieSearchVC: UIViewController {
         srRating1.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(srRating1)
         NSLayoutConstraint.activate([
-            srRating1.topAnchor.constraint(equalTo: srImage.bottomAnchor, constant: 10),
+            srRating1.topAnchor.constraint(equalTo: srInfoCell.bottomAnchor, constant: 10),
             srRating1.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
