@@ -165,7 +165,7 @@ class MovieSearchVC: UIViewController {
         srRating1.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(srRating1)
         NSLayoutConstraint.activate([
-            srRating1.topAnchor.constraint(equalTo: srInfoCell.bottomAnchor, constant: 10),
+            srRating1.topAnchor.constraint(equalTo: srInfoCell.posterImageView.bottomAnchor, constant: 20),
             srRating1.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 

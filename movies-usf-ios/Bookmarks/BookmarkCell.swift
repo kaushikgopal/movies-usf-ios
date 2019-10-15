@@ -68,7 +68,7 @@ class BookmarkCell: UITableViewCell {
         posterImageView.translatesAutoresizingMaskIntoConstraints = false
         posterImageView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         posterImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-        posterImageView.heightAnchor.constraint(equalToConstant: BookmarkCell.HEIGHT - 20).isActive = true
+        posterImageView.heightAnchor.constraint(equalTo: heightAnchor, constant: -20).isActive = true
         posterImageView.widthAnchor.constraint(equalTo: posterImageView.heightAnchor, multiplier: 1/1.5).isActive = true
     }
     
@@ -82,7 +82,7 @@ class BookmarkCell: UITableViewCell {
         addSubview(movieTitleView)
 
         movieTitleView.translatesAutoresizingMaskIntoConstraints = false
-        movieTitleView.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
+        movieTitleView.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
         movieTitleView.leadingAnchor.constraint(equalTo: posterImageView.trailingAnchor, constant: 20).isActive = true
         movieTitleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
     }
