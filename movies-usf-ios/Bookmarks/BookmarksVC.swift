@@ -45,8 +45,7 @@ class BookmarksVC: UIViewController {
 
 extension BookmarksVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return repo.bookmarkCount()
-        return 1
+        return repo.bookmarkCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
