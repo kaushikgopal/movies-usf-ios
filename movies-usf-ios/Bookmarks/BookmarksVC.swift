@@ -25,19 +25,17 @@ class BookmarksVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupUI()
+        
+        setupTableView()
+        registerTableViewDelegates()
     }
 
-    func setupUI() {
+    private func setupTableView() {
         // table view
         view.addSubview(tableView)
         
-        registerTableViewDelegates()
-        
         tableView.rowHeight = BookmarkCell.HEIGHT
         tableView.backgroundColor = UIColor.black
-        tableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.IDENTIFIER)
-        
         tableView.pin(to: view)
     }
     
@@ -57,8 +55,9 @@ extension BookmarksVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func registerTableViewDelegates() {
+    private func registerTableViewDelegates() {
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.IDENTIFIER)
     }
 }

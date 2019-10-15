@@ -39,7 +39,7 @@ class MovieSearchVC: UIViewController {
         setupUI()
         bindViewState()
         bindViewEffects()
-        bindUI()
+        bindUIEvents()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -62,7 +62,7 @@ class MovieSearchVC: UIViewController {
 
     // MARK: Private helper functions
 
-    private func bindUI() {
+    private func bindUIEvents() {
         sQuery.addTarget(self, action: #selector(searchPressed), for: .editingDidEndOnExit)
         
         let imageTap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
@@ -76,58 +76,8 @@ class MovieSearchVC: UIViewController {
     @objc private func imageTapped() {
         viewModel.processViewEvent(event: .toggleMovie(srInfoCell.movieTitleView.text ?? ""))
     }
-
-    private func bindViewState() {
-        viewModel.viewState
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .observeOn(MainScheduler.instance)
-            .subscribe(
-                onNext: { [weak self] vs in
-                    self?.srInfoCell.bind(
-                        posterUrl: vs.moviePosterUrl,
-                        title: vs.movieTitle,
-                        genreInfo: vs.genres,
-                        plotSummary: vs.plot
-                    )
-                    
-                    self?.srRating1.text = vs.rating1
-                    self?.srRating2.text = vs.rating2
-                },
-                onError: { err in
-                    print("🛠 we got an error \(err)")
-                }
-            )
-            .disposed(by: dbag)
-    }
-    
-    private func bindViewEffects() {
-        viewModel.viewEffects
-            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
-            .observeOn(MainScheduler.instance)
-            .subscribe(
-                onNext: { [weak self] ve in
-                    switch ve {
-                    case .addedBookmark(let (text)):
-                        self?.banner?.dismiss()
-                        self?.banner = NotificationBanner(title: text, style: .success)
-                        self?.banner?.show()
-                    case .removedBookmark(let (text)):
-                        self?.banner?.dismiss()
-                        self?.banner = NotificationBanner(title: text, style: .warning)
-                        self?.banner?.show()
-                    case .noEffect:
-                        print("no effect")
-                    }
-                },
-                onError: { err in
-                    print("🛠 we got an error \(err)")
-                }
-            )
-            .disposed(by: dbag)
-    }
     
     private func setupUI() {
-
         // setup search query view
         sQuery.attributedPlaceholder = NSAttributedString(
             string: "Search a Movie...",
@@ -178,5 +128,56 @@ class MovieSearchVC: UIViewController {
             srRating2.topAnchor.constraint(equalTo: srRating1.bottomAnchor, constant: 8),
             srRating2.trailingAnchor.constraint(equalTo: srRating1.trailingAnchor)
         ])
+    }
+}
+
+extension MovieSearchVC {
+    private func bindViewState() {
+        viewModel.viewState
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: { [weak self] vs in
+                    self?.srInfoCell.bind(
+                        posterUrl: vs.moviePosterUrl,
+                        title: vs.movieTitle,
+                        genreInfo: vs.genres,
+                        plotSummary: vs.plot
+                    )
+                    
+                    self?.srRating1.text = vs.rating1
+                    self?.srRating2.text = vs.rating2
+                },
+                onError: { err in
+                    print("🛠 we got an error \(err)")
+                }
+            )
+            .disposed(by: dbag)
+    }
+    
+    private func bindViewEffects() {
+        viewModel.viewEffects
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .subscribe(
+                onNext: { [weak self] ve in
+                    switch ve {
+                    case .addedBookmark(let (text)):
+                        self?.banner?.dismiss()
+                        self?.banner = NotificationBanner(title: text, style: .success)
+                        self?.banner?.show()
+                    case .removedBookmark(let (text)):
+                        self?.banner?.dismiss()
+                        self?.banner = NotificationBanner(title: text, style: .warning)
+                        self?.banner?.show()
+                    case .noEffect:
+                        print("no effect")
+                    }
+                },
+                onError: { err in
+                    print("🛠 we got an error \(err)")
+                }
+            )
+            .disposed(by: dbag)
     }
 }
