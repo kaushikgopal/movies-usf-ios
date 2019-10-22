@@ -11,7 +11,7 @@ import UIKit
 class BookmarkCell: UITableViewCell {
 
     static let HEIGHT = CGFloat(200.0)
-    static let IDENTIFIER = "BookmarksVC::BookmarkCell"
+    static let IDENTIFIER: String = "BookmarksVC::BookmarkCell"
     
     let posterImageView = UIImageView()
     let movieTitleView = UILabel()

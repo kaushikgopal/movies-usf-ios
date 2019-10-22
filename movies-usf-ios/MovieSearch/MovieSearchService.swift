@@ -35,7 +35,7 @@ final class MovieSearchServiceImpl: MovieSearchService {
     }
 }
 
-struct MovieSearchResult: Codable {
+struct MovieSearchResult: Codable, Equatable {
     let searchSuccess: Bool
     let searchErrorMessage: String
 
@@ -79,7 +79,7 @@ struct MovieSearchResult: Codable {
     }
 }
 
-struct Rating: Codable {
+struct Rating: Codable, Equatable {
     let Source: String
     let Value: String
 }
