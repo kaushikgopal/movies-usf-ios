@@ -222,15 +222,15 @@ private extension Observable where Element == MovieSearchVM.ViewResult {
 
 extension MovieSearchVM {
     enum ViewEvent {
-        case screenLoad
+        case viewResume
         case searchMovie(String)
-        case toggleMovie(String)
+        case addToHistory(MovieSearchResult)
     }
 }
 
 private extension MovieSearchVM {
     enum ViewResult {
-        case screenLoadResult
+        case viewResumeResult
         case searchMovieResult(
             movieSearchText: String,
             movieResult: MovieSearchResult?,
@@ -245,29 +245,36 @@ private extension MovieSearchVM {
 
 extension MovieSearchVM {
     struct ViewState: Equatable {
+        
+        let searchBoxText: String
         let movieTitle: String
         let moviePosterUrl: String?
         let genres: String
         let plot: String
         let rating1: String
         let rating2: String
+        let searchHistoryList: [MovieSearchResult]
 
         // helpful function to prevent mutating existing state
         func copy(
+            searchBoxText: String? = nil,
             movieTitle: String? = nil,
             moviePosterUrl: String? = nil,
             genres: String? = nil,
             plot: String? = nil,
             rating1: String? = nil,
-            rating2: String? = nil
+            rating2: String? = nil,
+            searchHistoryList: [MovieSearchResult]? = nil
         ) -> ViewState {
             return ViewState(
+                searchBoxText: searchBoxText ?? self.searchBoxText,
                 movieTitle: movieTitle ?? self.movieTitle,
                 moviePosterUrl: moviePosterUrl ?? self.moviePosterUrl,
                 genres: genres ?? self.genres,
                 plot: plot ?? self.plot,
                 rating1: rating1 ?? self.rating1,
-                rating2: rating2 ?? self.rating2
+                rating2: rating2 ?? self.rating2,
+                searchHistoryList: searchHistoryList ?? self.searchHistoryList
             )
         }
     }
