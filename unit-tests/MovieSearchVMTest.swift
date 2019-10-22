@@ -231,13 +231,13 @@ class MovieSearchVMTest: XCTestCase {
             // click movie once to bookmark it
             viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.toggleMovie("blade"))
             bookMarkCountT1 = try! movieRepo
-                .movieBookmarksListOnce().toBlocking().toArray().first!.count
+                .bookmarkListOnce().toBlocking().toArray().first!.count
         }
         scheduler.scheduleAt(2) {
             // click movie again to unbookmark
             viewModel.processViewEvent(event: MovieSearchVM.ViewEvent.toggleMovie("blade"))
             bookMarkCountT2 = try! movieRepo
-                .movieBookmarksListOnce().toBlocking().toArray().first!.count
+                .bookmarkListOnce().toBlocking().toArray().first!.count
         }
 
         scheduler.start()
