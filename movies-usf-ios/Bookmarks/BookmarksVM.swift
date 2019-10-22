@@ -18,13 +18,13 @@ final class BookmarksVM {
 
     required init(repo: MovieRepository) {
         let r: Observable<ViewResult> = eventToResult(
-            events: viewEventSubject,
+            events: viewEventSubject.do(onNext: { print("🛠 BookmarksVM: event \($0)") }),
             repo: repo
         )
         .do(onNext: { print("🛠 BookmarksVM: result \($0)") })
         .share()
         
-        viewState = resultToViewState(resultStream: r)
+        viewState = resultToViewState(resultStream: r, repo: repo)
             .distinctUntilChanged()
             .do(onNext: { print("🛠 BookmarksVM: view[state] \($0)") })
         viewEffects = resultToViewEffects(resultStream: r)
@@ -41,13 +41,25 @@ private func eventToResult(
     events: Observable<BookmarksVM.ViewEvent>,
     repo: MovieRepository
 ) -> Observable<BookmarksVM.ViewResult> {
-    return Observable<BookmarksVM.ViewResult>.empty()
+    return events.flatMap { event -> Observable<BookmarksVM.ViewResult> in
+        switch (event) {
+        case .viewResume:
+            return Observable.just(.viewResumeResult)
+        }
+    }
 }
 
 private func resultToViewState(
-    resultStream: Observable<BookmarksVM.ViewResult>
+    resultStream: Observable<BookmarksVM.ViewResult>,
+    repo: MovieRepository
 ) -> Observable<BookmarksVM.ViewState> {
-    return Observable<BookmarksVM.ViewState>.empty()
+    return resultStream.flatMap { r -> Observable<BookmarksVM.ViewState> in
+        switch(r) {
+        case .viewResumeResult:
+            return repo.bookmarkListOnce()
+                .map { BookmarksVM.ViewState(bookmarks: $0) }
+        }
+    }
 }
 
 private func resultToViewEffects(
@@ -57,9 +69,13 @@ private func resultToViewEffects(
 }
 
 extension BookmarksVM {
-    enum ViewEvent {}
+    enum ViewEvent {
+        case viewResume
+    }
 
-    struct ViewState: Equatable {}
+    struct ViewState: Equatable {
+        let bookmarks: [MovieSearchResult]
+    }
 
     enum ViewEffect: Equatable {
         case noEffect
@@ -67,6 +83,8 @@ extension BookmarksVM {
 }
 
 private extension BookmarksVM {
-    enum ViewResult {}
+    enum ViewResult {
+        case viewResumeResult
+    }
 }
     

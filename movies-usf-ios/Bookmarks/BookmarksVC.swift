@@ -7,10 +7,19 @@
 //
 
 import UIKit
+import RxSwift
 
 class BookmarksVC: UIViewController {
+
+    private let repo: MovieRepository
+    private let vm: BookmarksVM
+    private let dbag = DisposeBag()
+
+    private var bookmarksTableView = UITableView()
+    private var vs: BookmarksVM.ViewState? = nil
+
     init(_ movieRepo: MovieRepository) {
-        // self.viewModel = MovieSearchVM(repo: movieRepo)
+        self.vm = BookmarksVM(repo: movieRepo)
         self.repo = movieRepo
         super.init(nibName: nil, bundle: nil)
     }
@@ -28,35 +37,51 @@ class BookmarksVC: UIViewController {
         
         setupTableView()
         registerTableViewDelegates()
+        bindViewState()
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        vm.processViewEvent(event: .viewResume)
+    }
+    
     private func setupTableView() {
         // table view
-        view.addSubview(tableView)
+        view.addSubview(bookmarksTableView)
         
-        tableView.rowHeight = BookmarkCell.HEIGHT
-        tableView.backgroundColor = UIColor.black
-        tableView.pin(to: view)
+        bookmarksTableView.rowHeight = BookmarkCell.HEIGHT
+        bookmarksTableView.backgroundColor = UIColor.black
+        bookmarksTableView.pin(to: view)
     }
-    
-    private var tableView = UITableView()
-    private let repo: MovieRepository
 }
 
-extension BookmarksVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repo.bookmarkCount()
+extension BookmarksVC {
+    private func bindViewState() {
+        vm.viewState
+            .subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
+            .observeOn(MainScheduler.instance)
+            .do(onError: { err in
+                print("🛠 BookmarksVC: we got an error \(err)")
+            })
+            .map { $0.bookmarks }
+            .bind(to: bookmarksTableView.rx.items(
+                    cellIdentifier: BookmarkCell.IDENTIFIER,
+                    cellType: BookmarkCell.self
+            )){ (row, element, cell) in
+                cell.bind(
+                    posterUrl: element.posterUrl,
+                    title: element.title,
+                    genreInfo: element.genre,
+                    plotSummary: element.plot
+                )
+            }
+            .disposed(by: dbag)
     }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: BookmarkCell.IDENTIFIER) as! BookmarkCell
-//        cell.bind(content: )
-        return cell
-    }
-    
+}
+
+extension BookmarksVC: UITableViewDelegate {
     private func registerTableViewDelegates() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.IDENTIFIER)
+        bookmarksTableView.delegate = self
+        bookmarksTableView.register(BookmarkCell.self, forCellReuseIdentifier: BookmarkCell.IDENTIFIER)
     }
 }
